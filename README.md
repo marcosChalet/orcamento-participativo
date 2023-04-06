@@ -11,4 +11,4 @@
 > Este projeto tem como escopo exercitar, colocar em prática e demonstrar as habilidades adquiridas durante a cadeira de desenvolvimento mobile na Universidade Federal do Cariri (UFCA).
 > Ele se resume a um APP desenvolvido com React Native, TypeScript e integrado com o Strapi.
 >
-> **_Clique [aqui](https://github.com/marcosChalet/mobile-app/blob/main/Atividade2.md) para ter acesso ao domínio do projeto_**.
+> **_Clique [aqui](Atividade2.md) para ter acesso ao domínio do projeto_**.
