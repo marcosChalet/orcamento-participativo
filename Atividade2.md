@@ -28,26 +28,26 @@ Aplicativo para que a comunidade interna da UFCA possa participar ativamente das
 
 ### Front-end:
 
-- [**Samuel:**] (Front-end) Prototipação [x]
-- [**Insira seu nome aqui:**] (Front-end) Tela de boas vindas, cadastro e login []
-- [**Insira seu nome aqui:**] (Front-end) Tela inicial de propostas []
-- [**Insira seu nome aqui:**] (Front-end) Tela com detalhe de propostas / projetos []
-- [**Insira seu nome aqui:**] (Front-end) Tela com propostas / projetos favoritos []
-- [**Insira seu nome aqui:**] (Front-end) Tela e formulário de submissão de projetos []
-- [**Insira seu nome aqui:**] (Front-end) Tela de visualização de projetos da comunidade []
-- [**Insira seu nome aqui:**] (Front-end) Tela de perfil []
-- (Front-end) Telas de votações []
-    - [**Insira seu nome aqui:**] Votação Local Iterativa
-    - [**Insira seu nome aqui:**] Knapsack Voting
-    - [**Insira seu nome aqui:**] 1-Approval
+- [x] **Samuel:** (Front-end) Prototipação
+- [ ] [**Insira seu nome aqui:**] (Front-end) Tela de boas vindas, cadastro e login
+- [ ] [**Insira seu nome aqui:**] (Front-end) Tela inicial de propostas
+- [ ] [**Insira seu nome aqui:**] (Front-end) Tela com detalhe de propostas / projetos
+- [ ] [**Insira seu nome aqui:**] (Front-end) Tela com propostas / projetos favoritos
+- [ ] [**Insira seu nome aqui:**] (Front-end) Tela e formulário de submissão de projetos
+- [ ] [**Insira seu nome aqui:**] (Front-end) Tela de visualização de projetos da comunidade
+- [ ] [**Insira seu nome aqui:**] (Front-end) Tela de perfil
+- [ ] (Front-end) Telas de votações
+    - [ ] [**Insira seu nome aqui:**] Votação Local Iterativa
+    - [ ] [**Insira seu nome aqui:**] Knapsack Voting
+    - [ ] [**Insira seu nome aqui:**] 1-Approval
 
 ### Back-end:
 
-- [**Insira seu nome aqui:**] (Back-end) Modelagem do banco de dados no Strapi []
-- [**Insira seu nome aqui:**] (Back-end) Integração com Strapi []
-- [**Insira seu nome aqui:**] (Back-end) Cadastro e autenticação []
-- [**Insira seu nome aqui:**] (Back-end) CRUD propostas / projetos []
-- [**Samuel:**] (Back-end) Algoritmos de votação []
+- [ ] [**Insira seu nome aqui:**] (Back-end) Modelagem do banco de dados no Strapi
+- [ ] [**Insira seu nome aqui:**] (Back-end) Integração com Strapi
+- [ ] [**Insira seu nome aqui:**] (Back-end) Cadastro e autenticação
+- [ ] [**Insira seu nome aqui:**] (Back-end) CRUD propostas / projetos
+- [ ] [**Samuel:**] (Back-end) Algoritmos de votação
 
 # 6 - Cronograma
 
