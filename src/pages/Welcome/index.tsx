@@ -39,10 +39,10 @@ export default function Welcome() {
 const {styles} = StyleSheet.create({
   scrollView: {
     flexGrow: 1,
+    backgroundColor: '#FFF',
   },
   container: {
     flex: 1,
-    backgroundColor: '#FFF',
     padding: 15,
     '@media (min-width:400px)': {
       padding: 34,
