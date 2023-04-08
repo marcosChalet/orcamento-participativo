@@ -13,8 +13,8 @@ export default function Welcome() {
   const navigation = useNavigation<{navigate: (P: string) => void}>();
 
   return (
-    <View style={styles.container}>
-      <ScrollView>
+    <ScrollView style={styles.scrollView}>
+      <View style={styles.container}>
         <LogoUFCA width={81} height={57} />
         <AppText style={styles.helloText}>
           Oi! Boas vindas ao app de Orçamento Participativo da UFCA!
@@ -31,12 +31,15 @@ export default function Welcome() {
         <Button clickFn={() => navigation.navigate('Login')}>
           <AppText style={styles.buttonText}>Continuar</AppText>
         </Button>
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 }
 
 const {styles} = StyleSheet.create({
+  scrollView: {
+    flexGrow: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: '#FFF',
