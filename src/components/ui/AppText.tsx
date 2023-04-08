@@ -13,5 +13,6 @@ export default function AppText({children, style}: TextType) {
 const styles = StyleSheet.create({
   baseText: {
     color: '#532B1D',
+    fontFamily: 'Roboto-Medium',
   },
 });
