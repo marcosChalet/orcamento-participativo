@@ -36,6 +36,7 @@ export default function Welcome() {
 const {styles} = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFF',
     padding: 15,
     '@media (min-width:400px)': {
       padding: 34,
