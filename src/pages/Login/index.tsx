@@ -110,6 +110,7 @@ const {styles} = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 38,
+    backgroundColor: '#FFF',
     '@media (min-width:400px)': {
       paddingHorizontal: 38,
     },
