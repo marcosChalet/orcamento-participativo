@@ -7,8 +7,6 @@
 
 ## Vantagens
 
----
-
 - Velocidade de desenvolvimento
 - Facilidade de desenvolvimento
 - Segurança
@@ -16,14 +14,14 @@
 - Não necessidade de gerenciamento
 - Integração entre serviços
 
-## Desvantagens
 
----
+## Desvantagens
 
 - Não controle do serviço
 - Dependência da integridade do fornecedor para com seus dados
 - Necessidade de mudança caso seu fornecedor venha a sair do mercado
 - Limitação de funcionalidades
+
 
 ## Compatibilidade E Uso Do Parse Com React Native
 
@@ -45,8 +43,6 @@ Parse.setAsyncStorage(AsyncStorage);
 
 ## Principais Recursos do Parse
 
----
-
 - Banco de dados (NoSQL ou SQL)
 - APIs (REST ou GraphQL)
 - Funções da nuvem
@@ -55,6 +51,7 @@ Parse.setAsyncStorage(AsyncStorage);
 - Notificações (notificações push, notificações por email)
 - Armazenamento de arquivo
 - Integração de mídia social
+
 
 ## Motivação para uso do Strapi
 
