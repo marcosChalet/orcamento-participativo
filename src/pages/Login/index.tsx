@@ -138,6 +138,7 @@ const {styles} = StyleSheet.create({
     height: 41,
     fontSize: 16,
     paddingStart: 8,
+    color: '#444',
   },
   inputText: {
     fontSize: 16,
