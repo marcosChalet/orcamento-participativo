@@ -1,7 +1,6 @@
 import React from 'react';
 import {ScrollView, View} from 'react-native';
 import StyleSheet from 'react-native-media-query';
-import {useNavigation} from '@react-navigation/native';
 
 import LogoUFCA from 'assets/imgs/ufca-logo.svg';
 import PeopleIllustration from 'assets/imgs/people-illustration.svg';
@@ -9,9 +8,13 @@ import PeopleIllustration from 'assets/imgs/people-illustration.svg';
 import Button from 'components/ui/Button';
 import AppText from 'components/ui/AppText';
 
-export default function Welcome() {
-  const navigation = useNavigation<{navigate: (P: string) => void}>();
+import {NavigationProp} from '@react-navigation/native';
 
+type WelcomeType = {
+  navigation: NavigationProp<any, any>;
+};
+
+export default function Welcome({navigation}: WelcomeType) {
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
