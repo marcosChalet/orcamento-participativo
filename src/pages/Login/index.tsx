@@ -7,7 +7,13 @@ import Button from 'components/ui/Button';
 import EyeOn from 'assets/imgs/eye-on.svg';
 import EyeOff from 'assets/imgs/eye-off.svg';
 
-export default function Login() {
+import {NavigationProp} from '@react-navigation/native';
+
+type LoginType = {
+  navigation: NavigationProp<any, any>;
+};
+
+export default function Login({navigation}: LoginType) {
   const [login, setLogin] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
   const loginRef = useRef<TextInput>(null);
@@ -28,6 +34,11 @@ export default function Login() {
     }
 
     // verificar credenciais e logar...
+    // TODO: fazer autenticação
+    // aqui está uma autenticação fake
+    if (login === 'admin' && password === 'admin') {
+      navigation.navigate("Home");
+    }
   }
 
   function alertInputError(data: string | null) {
