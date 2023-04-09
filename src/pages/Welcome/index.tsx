@@ -8,10 +8,16 @@ import PeopleIllustration from 'assets/imgs/people-illustration.svg';
 import Button from 'components/ui/Button';
 import AppText from 'components/ui/AppText';
 
-export default function Welcome() {
+import {NavigationProp} from '@react-navigation/native';
+
+type WelcomeType = {
+  navigation: NavigationProp<any, any>;
+};
+
+export default function Welcome({navigation}: WelcomeType) {
   return (
-    <View style={styles.container}>
-      <ScrollView>
+    <ScrollView style={styles.scrollView}>
+      <View style={styles.container}>
         <LogoUFCA width={81} height={57} />
         <AppText style={styles.helloText}>
           Oi! Boas vindas ao app de Orçamento Participativo da UFCA!
@@ -25,15 +31,19 @@ export default function Welcome() {
           universidade debatendo, propondo e votando em projetos e na
           distribuição orçamentária.
         </AppText>
-        <Button>
+        <Button clickFn={() => navigation.navigate('Login')}>
           <AppText style={styles.buttonText}>Continuar</AppText>
         </Button>
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 }
 
 const {styles} = StyleSheet.create({
+  scrollView: {
+    flexGrow: 1,
+    backgroundColor: '#FFF',
+  },
   container: {
     flex: 1,
     padding: 15,
