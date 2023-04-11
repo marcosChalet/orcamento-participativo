@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "usuarios",
+  "info": {
+    "singularName": "usuario",
+    "pluralName": "usuarios",
+    "displayName": "Usuarios"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "email": {
+      "type": "email"
+    },
+    "nome": {
+      "type": "string"
+    },
+    "matricula": {
+      "type": "string"
+    },
+    "senha": {
+      "type": "password"
+    }
+  }
+}
