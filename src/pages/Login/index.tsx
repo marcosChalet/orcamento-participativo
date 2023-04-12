@@ -9,6 +9,41 @@ import EyeOff from 'assets/imgs/eye-off.svg';
 
 import {NavigationProp} from '@react-navigation/native';
 
+import Strapi from "strapi-sdk-js";
+
+const strapi = new Strapi({
+  url: "http://192.168.0.6:1337",
+  prefix: "/api",
+  store: {
+    key: "strapi_jwt",
+    useLocalStorage: false,
+    cookieOptions: { path: "/" },
+  },
+  axiosOptions: {
+    headers: {
+      'Authorization': 'Bearer 0ff43ad4a5309535078ffc1ece03c4408b9786e1a1e5e616479999a85cc15eaa6bc0f1b47731777a9d883c74dfc53bd3c7248b7ff9de0175846462168bb4849ab0225bc59c0cc3963e62916b8f9e95bb5bbc24e9d5d987c2f20334ad20187605d8078d55592d782205499b2b42bd6260c9ebb216d52928b6986b923fece42817',
+      'Content-Type': 'application/json',
+    }
+  },
+})
+
+async function authenticate(user:string) {
+  console.log(user);
+  return strapi.find('usuarios', {
+    filters: {
+      matricula: {
+        $eq: user,
+      },
+    },
+  })
+  .then((data : any) => {
+    return data.data;
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+}
+
 type LoginType = {
   navigation: NavigationProp<any, any>;
 };
@@ -35,10 +70,20 @@ export default function Login({navigation}: LoginType) {
 
     // verificar credenciais e logar...
     // TODO: fazer autenticação
-    // aqui está uma autenticação fake
-    if (login === 'admin' && password === 'admin') {
-      navigation.navigate("Home");
-    }
+    authenticate(login)
+    .then( (data) => {
+      if (data.length == 1) {
+        let user = data[0]['attributes'];
+        let nome = user['nome'];
+        let matricula = user['matricula'];
+        let email = user['email'];
+        console.log('Logando o usuário: ');
+        console.log(nome, matricula, email);
+        navigation.navigate("Home");
+      }
+    }).catch( (error) => {
+      console.log(error);
+    })
   }
 
   function alertInputError(data: string | null) {

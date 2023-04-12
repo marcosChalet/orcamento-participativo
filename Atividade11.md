@@ -28,24 +28,29 @@ Para utilizar o Strapi, primeiro importamos ele no projeto e criamos uma instân
 
 ```typescript
 import Strapi from "strapi-sdk-js";
-
-const Strapi = new Strapi();
 ```
 
-Podemos também criar um objeto com algumas outras opções, caso necessário:
+Para criar uma instância precisamos passar algumas opções para o objeto. A primeira é `url`, ela é a **url base** do seu servidor strapi. **ATENÇÃO:** se você estiver utilizando um servidor strapi local, **NÃO UTILIZE O ENDEREÇO `localhost`**, pois isto pode gerar um erro. Verifique o seu IP pelo terminal e faça: `url: http://<SEU_IP>:1337`. A segunda opção é o prefixo da API do Strapi que por padrão é `'/api'`. A opção `store` armazena as configurações do armazenamento de cookies. Por fim, a `axiosOptions` é muito importante pois é onde você irá definir o tipo de resposta da requisição e enviar seu Token para autenticação. Veja abaixo como fazer:
 
 ```typescript
 const Strapi = new Strapi({
-    url: "http://localhost:1337",
+    url: "http://<SEU_IP>:1337",
     prefix: "/api",
     store: {
         key: "strapi_jwt",
         useLocalStorage: false,
         cookieOptions: {path: "/"},
     },
-    axiosOptions: {},
+    axiosOptions: {
+      headers: {
+        'Authorization': 'Bearer <SEU_TOKEN_DA_API>',
+        'Content-Type': 'application/json',
+        }
+      },
 });
 ```
+
+Feito isso, você está pronto para utilizar os métodos da SDK.
 
 ### Métodos
 

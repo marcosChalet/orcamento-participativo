@@ -22,6 +22,12 @@
     },
     "senha": {
       "type": "password"
+    },
+    "propostas": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::proposta.proposta",
+      "mappedBy": "usuario"
     }
   }
 }
