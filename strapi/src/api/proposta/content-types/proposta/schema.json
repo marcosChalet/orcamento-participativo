@@ -1,0 +1,51 @@
+{
+  "kind": "collectionType",
+  "collectionName": "propostas",
+  "info": {
+    "singularName": "proposta",
+    "pluralName": "propostas",
+    "displayName": "Propostas",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "titulo": {
+      "type": "string"
+    },
+    "descricao": {
+      "type": "string"
+    },
+    "capa": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "tags": {
+      "type": "json"
+    },
+    "valor": {
+      "type": "decimal"
+    },
+    "data_final": {
+      "type": "datetime"
+    },
+    "usuario": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::usuario.usuario",
+      "inversedBy": "propostas"
+    },
+    "texto": {
+      "type": "richtext"
+    }
+  }
+}
