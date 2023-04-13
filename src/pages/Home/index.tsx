@@ -10,23 +10,9 @@ import HeartIcon from 'assets/imgs/heart-icon.svg';
 import ChatIcon from 'assets/imgs/chat-icon.svg';
 import PeopleIcon from 'assets/imgs/people-icon.svg';
 
-import Strapi from "strapi-sdk-js";
+import {NavigationProp} from '@react-navigation/native';
 
-const strapi = new Strapi({
-  url: "http://192.168.0.6:1337", //lembrar sempre de atualizar essa linha com o IP correto
-  prefix: "/api",
-  store: {
-    key: "strapi_jwt",
-    useLocalStorage: false,
-    cookieOptions: { path: "/" },
-  },
-  axiosOptions: {
-    headers: {
-      'Authorization': 'Bearer 0ff43ad4a5309535078ffc1ece03c4408b9786e1a1e5e616479999a85cc15eaa6bc0f1b47731777a9d883c74dfc53bd3c7248b7ff9de0175846462168bb4849ab0225bc59c0cc3963e62916b8f9e95bb5bbc24e9d5d987c2f20334ad20187605d8078d55592d782205499b2b42bd6260c9ebb216d52928b6986b923fece42817',
-      'Content-Type': 'application/json',
-    }
-  },
-})
+import strapi from "../../context/Strapi";
 
 async function getPropostas() {
   return strapi.find('propostas', {
@@ -45,7 +31,11 @@ async function getPropostas() {
   });
 }
 
-export default function Welcome() {
+type WelcomeType = {
+  navigation: NavigationProp<any, any>;
+};
+
+export default function Welcome({navigation}: WelcomeType) {
 
   const [propostas, setPropostas] = useState<any[]>([]);
 
@@ -61,6 +51,7 @@ export default function Welcome() {
         let capa = "http://192.168.0.6:1337" + proposta["capa"]["data"]["attributes"]["url"];
         let autor = proposta["usuario"]["data"]["attributes"]["nome"];
         let id = data[i]["id"];
+        let texto = proposta["texto"];
         for (const [key, value] of Object.entries(t)) {
           tags.push(String(value));
         }
@@ -74,6 +65,9 @@ export default function Welcome() {
             author={autor}
             finalDate={new Date(proposta["data_final"])}
             imageUrl={capa}
+            id={id}
+            nav={navigation}
+            texto={texto}
           />
         );
       }
