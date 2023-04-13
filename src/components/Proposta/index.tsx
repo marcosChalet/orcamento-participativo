@@ -1,6 +1,6 @@
 import React from 'react';
 import {ImageBackground, View} from 'react-native';
-import {StyleSheet, Image} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 import AppText from '../ui/AppText';
 import Tag from '../Tag';
@@ -14,13 +14,14 @@ type propostaType = {
   cost: number;
   author: string;
   finalDate: Date;
+  imageUrl: string;
 };
 
 export default function Proposta(props: propostaType) {
   let tags = [];
 
   for (let i = 0; i < props.tags.length; i++) {
-    tags.push(<Tag name={props.tags[i]} />);
+    tags.push(<Tag key={props.title + i} name={props.tags[i]} />);
   }
 
   let now = new Date();
@@ -31,7 +32,9 @@ export default function Proposta(props: propostaType) {
 
   let finalDiff: string;
 
-  if (days > 1) {
+  if (days <= 0) {
+    finalDiff = '0 minutos';
+  } else if (days > 1) {
     finalDiff = String(Math.floor(days)) + ' dias';
   } else if (hours > 1) {
     finalDiff = String(Math.floor(hours)) + ' horas';
@@ -48,7 +51,9 @@ export default function Proposta(props: propostaType) {
       <ImageBackground
         style={styles.imageContainer}
         imageStyle={styles.mainImageStyle}
-        source={require('../../../assets/imgs/UFCA.jpg')}
+        //source={require('../../../assets/imgs/UFCA.jpg')}
+        //source={{uri: 'https://s2.glbimg.com/KID1vUw1si7u76t4Z1MtVKpx5-8=/0x0:1127x628/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2019/a/D/3zUAHBRNug7N5x8X1xtw/federal-do-cariri.jpg'}}
+        source={{uri: props.imageUrl}}
         resizeMode="cover"
       />
 
@@ -79,7 +84,7 @@ export default function Proposta(props: propostaType) {
               />
             </View>
             <AppText style={styles.miniBiggerText}>
-              Pró-reitoria de Assistência Estudantil (PRAE)
+              {props.author}
             </AppText>
           </View>
 
@@ -192,5 +197,6 @@ const styles = StyleSheet.create({
   miniBiggerText: {
     fontSize: 10,
     fontWeight: '700',
+    flexShrink: 1,
   },
 });

@@ -12,7 +12,7 @@ import {NavigationProp} from '@react-navigation/native';
 import Strapi from "strapi-sdk-js";
 
 const strapi = new Strapi({
-  url: "http://192.168.0.6:1337",
+  url: "http://192.168.0.6:1337", //lembrar sempre de atualizar essa linha com o IP correto
   prefix: "/api",
   store: {
     key: "strapi_jwt",
