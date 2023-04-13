@@ -11,7 +11,7 @@
 > Este projeto tem como escopo exercitar, colocar em prática e demonstrar as habilidades adquiridas durante a cadeira de desenvolvimento mobile na Universidade Federal do Cariri (UFCA).
 > Ele se resume a um APP desenvolvido com React Native, TypeScript e integrado com o Strapi.
 >
-> **_Clique [aqui](atividades/Atividade2.md) para ter acesso ao domínio do projeto_**.
+> **_Clique [aqui](docs/Atividade2.md) para ter acesso ao domínio do projeto_**.
 
 ### Sobre o Projeto de Orçamento Participativo
 
