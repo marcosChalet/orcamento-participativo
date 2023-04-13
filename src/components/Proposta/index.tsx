@@ -1,6 +1,6 @@
 import React from 'react';
 import {ImageBackground, View} from 'react-native';
-import {StyleSheet, Image} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 import AppText from '../ui/AppText';
 import Tag from '../Tag';
@@ -32,7 +32,9 @@ export default function Proposta(props: propostaType) {
 
   let finalDiff: string;
 
-  if (days > 1) {
+  if (days <= 0) {
+    finalDiff = '0 minutos';
+  } else if (days > 1) {
     finalDiff = String(Math.floor(days)) + ' dias';
   } else if (hours > 1) {
     finalDiff = String(Math.floor(hours)) + ' horas';
@@ -195,5 +197,6 @@ const styles = StyleSheet.create({
   miniBiggerText: {
     fontSize: 10,
     fontWeight: '700',
+    flexShrink: 1,
   },
 });
