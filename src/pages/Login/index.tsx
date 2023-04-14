@@ -9,6 +9,25 @@ import EyeOff from 'assets/imgs/eye-off.svg';
 
 import {NavigationProp} from '@react-navigation/native';
 
+import strapi from "../../context/Strapi";
+
+async function authenticate(user:string) {
+  console.log(user);
+  return strapi.find('usuarios', {
+    filters: {
+      matricula: {
+        $eq: user,
+      },
+    },
+  })
+  .then((data : any) => {
+    return data.data;
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+}
+
 type LoginType = {
   navigation: NavigationProp<any, any>;
 };
@@ -35,10 +54,20 @@ export default function Login({navigation}: LoginType) {
 
     // verificar credenciais e logar...
     // TODO: fazer autenticação
-    // aqui está uma autenticação fake
-    if (login === 'admin' && password === 'admin') {
-      navigation.navigate("Home");
-    }
+    authenticate(login)
+    .then( (data) => {
+      if (data.length == 1) {
+        let user = data[0]['attributes'];
+        let nome = user['nome'];
+        let matricula = user['matricula'];
+        let email = user['email'];
+        console.log('Logando o usuário: ');
+        console.log(nome, matricula, email);
+        navigation.navigate("Home");
+      }
+    }).catch( (error) => {
+      console.log(error);
+    })
   }
 
   function alertInputError(data: string | null) {
