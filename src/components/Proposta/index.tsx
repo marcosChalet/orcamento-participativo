@@ -1,11 +1,13 @@
 import React from 'react';
-import {ImageBackground, View} from 'react-native';
+import {ImageBackground, TouchableOpacity, View} from 'react-native';
 import {StyleSheet} from 'react-native';
 
 import AppText from '../ui/AppText';
 import Tag from '../Tag';
 
 import Heart from '../../../assets/imgs/heart.svg';
+
+import {NavigationProp} from '@react-navigation/native';
 
 type propostaType = {
   title: string;
@@ -15,6 +17,9 @@ type propostaType = {
   author: string;
   finalDate: Date;
   imageUrl: string;
+  id:number;
+  texto:string;
+  nav:NavigationProp<any, any>;
 };
 
 export default function Proposta(props: propostaType) {
@@ -46,65 +51,79 @@ export default function Proposta(props: propostaType) {
   finalCost = String(props.cost.toFixed(2)).replace('.', ',');
   finalCost = finalCost.replace(/\d{1,3}(?=(\d{3})+(?!\d))/g, '$&.');
 
+  function onClick() {
+    props.nav.navigate("Proposta", {
+      id: props.id,
+      titulo: props.title,
+      description: props.description,
+      cost: props.cost,
+      author: props.author,
+      imageUrl: props.imageUrl,
+      texto: props.texto,
+    })
+  }
+
   return (
-    <View style={styles.card}>
-      <ImageBackground
-        style={styles.imageContainer}
-        imageStyle={styles.mainImageStyle}
-        //source={require('../../../assets/imgs/UFCA.jpg')}
-        //source={{uri: 'https://s2.glbimg.com/KID1vUw1si7u76t4Z1MtVKpx5-8=/0x0:1127x628/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2019/a/D/3zUAHBRNug7N5x8X1xtw/federal-do-cariri.jpg'}}
-        source={{uri: props.imageUrl}}
-        resizeMode="cover"
-      />
-
-      <View style={styles.info}>
-        <AppText style={styles.title}>{props.title}</AppText>
-        <AppText style={styles.description}>{props.description}</AppText>
-
-        <View style={styles.rowContainer}>{tags}</View>
-
-        <AppText style={styles.cost}>R$ {finalCost}</AppText>
-
-        <View
-          style={{
-            borderBottomColor: '#CAC8C7',
-            borderBottomWidth: StyleSheet.hairlineWidth,
-            marginBottom: 10,
-          }}
+    <TouchableOpacity onPress = {onClick}>
+      <View style={styles.card}>
+        <ImageBackground
+          style={styles.imageContainer}
+          imageStyle={styles.mainImageStyle}
+          //source={require('../../../assets/imgs/UFCA.jpg')}
+          //source={{uri: 'https://s2.glbimg.com/KID1vUw1si7u76t4Z1MtVKpx5-8=/0x0:1127x628/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2019/a/D/3zUAHBRNug7N5x8X1xtw/federal-do-cariri.jpg'}}
+          source={{uri: props.imageUrl}}
+          resizeMode="cover"
         />
 
-        <View style={styles.bottomContainer}>
-          <View style={styles.authorContainer}>
-            <View>
-              <ImageBackground
-                style={styles.profileContainer}
-                imageStyle={styles.profilePicture}
-                source={require('../../../assets/imgs/procult.jpg')}
-                resizeMode="cover"
+        <View style={styles.info}>
+          <AppText style={styles.title}>{props.title}</AppText>
+          <AppText style={styles.description}>{props.description}</AppText>
+
+          <View style={styles.rowContainer}>{tags}</View>
+
+          <AppText style={styles.cost}>R$ {finalCost}</AppText>
+
+          <View
+            style={{
+              borderBottomColor: '#CAC8C7',
+              borderBottomWidth: StyleSheet.hairlineWidth,
+              marginBottom: 10,
+            }}
+          />
+
+          <View style={styles.bottomContainer}>
+            <View style={styles.authorContainer}>
+              <View>
+                <ImageBackground
+                  style={styles.profileContainer}
+                  imageStyle={styles.profilePicture}
+                  source={require('../../../assets/imgs/procult.jpg')}
+                  resizeMode="cover"
+                />
+              </View>
+              <AppText style={styles.miniBiggerText}>
+                {props.author}
+              </AppText>
+            </View>
+
+            <View style={styles.timeContainer}>
+              <AppText style={styles.miniText}>Restam: </AppText>
+              <AppText style={styles.miniBiggerText}>{finalDiff}</AppText>
+              <AppText style={styles.miniText}>para encerrar </AppText>
+            </View>
+
+            <View style={styles.heartContainer}>
+              <Heart
+                style={{
+                  width: 30,
+                  height: 30,
+                }}
               />
             </View>
-            <AppText style={styles.miniBiggerText}>
-              {props.author}
-            </AppText>
-          </View>
-
-          <View style={styles.timeContainer}>
-            <AppText style={styles.miniText}>Restam: </AppText>
-            <AppText style={styles.miniBiggerText}>{finalDiff}</AppText>
-            <AppText style={styles.miniText}>para encerrar </AppText>
-          </View>
-
-          <View style={styles.heartContainer}>
-            <Heart
-              style={{
-                width: 30,
-                height: 30,
-              }}
-            />
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
