@@ -9,23 +9,24 @@ import EyeOff from 'assets/imgs/eye-off.svg';
 
 import {NavigationProp} from '@react-navigation/native';
 
-import strapi from "../../context/Strapi";
+import strapi from '../../config/strapi';
 
-async function authenticate(user:string) {
+async function authenticate(user: string) {
   console.log(user);
-  return strapi.find('usuarios', {
-    filters: {
-      matricula: {
-        $eq: user,
+  return strapi
+    .find('usuarios', {
+      filters: {
+        matricula: {
+          $eq: user,
+        },
       },
-    },
-  })
-  .then((data : any) => {
-    return data.data;
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+    })
+    .then((data: any) => {
+      return data.data;
+    })
+    .catch(error => {
+      console.log(error);
+    });
 }
 
 type LoginType = {
@@ -55,19 +56,20 @@ export default function Login({navigation}: LoginType) {
     // verificar credenciais e logar...
     // TODO: fazer autenticação
     authenticate(login)
-    .then( (data) => {
-      if (data.length == 1) {
-        let user = data[0]['attributes'];
-        let nome = user['nome'];
-        let matricula = user['matricula'];
-        let email = user['email'];
-        console.log('Logando o usuário: ');
-        console.log(nome, matricula, email);
-        navigation.navigate("Home");
-      }
-    }).catch( (error) => {
-      console.log(error);
-    })
+      .then(data => {
+        if (data.length == 1) {
+          let user = data[0].attributes;
+          let nome = user.nome;
+          let matricula = user.matricula;
+          let email = user.email;
+          console.log('Logando o usuário: ');
+          console.log(nome, matricula, email);
+          navigation.navigate('Home');
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   function alertInputError(data: string | null) {
