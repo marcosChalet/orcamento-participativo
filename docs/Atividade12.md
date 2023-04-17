@@ -16,7 +16,4 @@
 
 - Qual a importância do assunto para o desenvolvimento do seu projeto em React Native
 
-  As chamadas de API são extremamente importantes para o desenvolvimento de um projeto em React Native de votação, pois esse tipo de aplicativo geralmente precisa se comunicar com um servidor para enviar e receber dados de votação.
-  Por exemplo, imagine que você esteja desenvolvendo um aplicativo de votação em React Native para uma eleição e que os usuários possam votar em seus candidatos favoritos. Para garantir que o aplicativo seja seguro e escalável, você precisa armazenar os resultados da votação em um servidor centralizado. Isso significa que você precisa enviar os votos dos usuários do aplicativo para o servidor e receber os resultados da votação do servidor de volta para o aplicativo.
-  Para fazer isso, você precisará usar chamadas de API HTTP para enviar e receber dados do servidor. Essas chamadas de API permitem que o aplicativo se comunique com o servidor e envie e receba informações, como os votos dos usuários e os resultados da votação.
-  Ao usar chamadas de API bem projetadas e otimizadas em seu aplicativo de votação em React Native, você pode garantir que o aplicativo seja eficiente, escalável e seguro. Além disso, as chamadas de API permitem que você integre facilmente outras funcionalidades e serviços em seu aplicativo, como autenticação de usuários e integração de mídia social.
+  As chamadas de API são extremamente importantes para o desenvolvimento de um projeto em React Native de votação, pois precisamos se comunicar com um servidor para enviar e receber dados de votação.
