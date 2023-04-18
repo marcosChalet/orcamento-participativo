@@ -12,23 +12,24 @@ import PeopleIcon from 'assets/imgs/people-icon.svg';
 
 import {NavigationProp} from '@react-navigation/native';
 
-import strapi from "../../context/Strapi";
+import strapi from '../../config/strapi';
 
 async function getPropostas() {
-  return strapi.find('propostas', {
-    filters: {
-      data_final: {
-        $gte: '2023-04-12',
+  return strapi
+    .find('propostas', {
+      filters: {
+        data_final: {
+          $gte: '2023-04-12',
+        },
       },
-    },
-    populate: '*',
-  })
-  .then((data : any) => {
-    return data.data;
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+      populate: '*',
+    })
+    .then((data: any) => {
+      return data.data;
+    })
+    .catch(error => {
+      console.log(error);
+    });
 }
 
 type WelcomeType = {
@@ -36,47 +37,47 @@ type WelcomeType = {
 };
 
 export default function Welcome({navigation}: WelcomeType) {
-
   const [propostas, setPropostas] = useState<any[]>([]);
 
   useEffect(() => {
-    let p:Array<any> = [];
+    let p: Array<any> = [];
     //console.log('useEffect');
     getPropostas()
-    .then( (data) => {
-      for (let i = 0; i < data.length; i++) {
-        let proposta = data[i]["attributes"];
-        let t = proposta["tags"];
-        let tags:Array<string> = [];
-        let capa = "http://192.168.0.6:1337" + proposta["capa"]["data"]["attributes"]["url"];
-        let autor = proposta["usuario"]["data"]["attributes"]["nome"];
-        let id = data[i]["id"];
-        let texto = proposta["texto"];
-        for (const [key, value] of Object.entries(t)) {
-          tags.push(String(value));
+      .then(data => {
+        for (let i = 0; i < data.length; i++) {
+          let proposta = data[i].attributes;
+          let t = proposta.tags;
+          let tags: Array<string> = [];
+          let capa =
+            'http://192.168.0.6:1337' + proposta.capa.data.attributes.url;
+          let autor = proposta.usuario.data.attributes.nome;
+          let id = data[i].id;
+          let texto = proposta.texto;
+          for (const [key, value] of Object.entries(t)) {
+            tags.push(String(value));
+          }
+          p.push(
+            <Proposta
+              key={id}
+              title={proposta.titulo}
+              description={proposta.descricao}
+              tags={tags}
+              cost={proposta.valor}
+              author={autor}
+              finalDate={new Date(proposta.data_final)}
+              imageUrl={capa}
+              id={id}
+              nav={navigation}
+              texto={texto}
+            />,
+          );
         }
-        p.push(
-          <Proposta
-            key={id}
-            title={proposta["titulo"]}
-            description={proposta["descricao"]}
-            tags={tags}
-            cost={proposta["valor"]}
-            author={autor}
-            finalDate={new Date(proposta["data_final"])}
-            imageUrl={capa}
-            id={id}
-            nav={navigation}
-            texto={texto}
-          />
-        );
-      }
-      //console.log(data);
-      setPropostas(p);
-    })
-    .catch( (error) => {
-      console.log(error);
-    })
+        //console.log(data);
+        setPropostas(p);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }, []);
 
   return (
