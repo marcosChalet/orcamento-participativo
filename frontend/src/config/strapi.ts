@@ -13,7 +13,7 @@ const api = new Strapi({
   axiosOptions: {
     headers: {
       Authorization:
-        'Bearer 007148e1a6b00a92799455c6e9bf4b579c9c9b15d2a8edd3998ecca52078b5abc5d926dee83e8ffcccecde272f630816110f60844f1420b6fd739158d43ddfd2862089dbcb394f9314bfdcb2d9dcedafdf5f13cd0ab489a0814f720bb47b8c467309c8f60fcf6b6de25e1bb89c9828570c7e3bd82bf5ffdcb65bd321fecf9acb',
+        'Bearer c1033061656d04bbffe60c9227b863a7c6f5b0f8f32f8c972ce413b44571fbca86cfa7c0ad13cd63f39646bdc5a1bd61503bf2598837e17d28743f8c913f88676d10c7388acf199b536b7ffef949fe0150d33499554ce07e9b5807a563c225dd0eb0ff4e8caccf1411c3e1fdef531d989228bfd95485e925169a647c5ce24e38',
       'Content-Type': 'application/json',
     },
   },

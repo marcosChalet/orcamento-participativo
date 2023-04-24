@@ -49,7 +49,7 @@ export default function Welcome({navigation}: WelcomeType) {
           let t = proposta.tags;
           let tags: Array<string> = [];
           let capa =
-            'http://192.168.0.6:1337' + proposta.capa.data.attributes.url;
+            'http://192.168.18.6:1337' + proposta.capa.data.attributes.url;
           let autor = proposta.usuario.data.attributes.nome;
           let id = data[i].id;
           let texto = proposta.texto;
