@@ -8,6 +8,7 @@ import {StyleSheet} from 'react-native';
 import Markdown from '@ronradtke/react-native-markdown-display';
 
 import AppText from 'components/ui/AppText';
+import Button from 'components/ui/Button';
 
 export default function Proposta() {
     const route:any = useRoute();
@@ -27,6 +28,10 @@ export default function Proposta() {
                 <Markdown style={style}>
                     {route.params.texto}
                 </Markdown>
+
+                <Button style={styles.buttonStyle}>
+                    <AppText style={styles.buttonText}>Votar</AppText>
+                </Button>
             </View>
         </ScrollView>
     )
@@ -40,6 +45,15 @@ const styles = StyleSheet.create({
             padding: 34,
             justifyContent: 'center',
         },
+    },
+    buttonStyle: {
+        marginTop: 20,
+        marginBottom: 8,
+    },
+    buttonText: {
+        color: '#FFF',
+        fontSize: 27,
+        fontFamily: 'Alegreya-BoldItalic',
     },
     scrollView: {
         flexGrow: 1,
