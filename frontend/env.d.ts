@@ -1,3 +1,5 @@
 declare module '@env' {
-  export const ENV_VAR: string;
+  export const STRAPI_KEY: string;
+  export const HOST: string;
+  export const PORT: number;
 }
