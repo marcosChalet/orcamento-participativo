@@ -11,8 +11,11 @@ import {NavigationProp} from '@react-navigation/native';
 
 import strapi from '../../config/strapi';
 
+import {STRAPI_KEY, HOST, PORT} from '@env';
+
 async function authenticate(user: string) {
   console.log(user);
+  console.log(STRAPI_KEY, HOST, PORT)
   return strapi
     .find('usuarios', {
       filters: {
@@ -25,7 +28,8 @@ async function authenticate(user: string) {
       return data.data;
     })
     .catch(error => {
-      console.log(error);
+      console.log(error)
+      //console.log(error.response.data);
     });
 }
 
@@ -69,6 +73,7 @@ export default function Login({navigation}: LoginType) {
       })
       .catch(error => {
         console.log(error);
+        //console.log(error.response.data);
       });
   }
 
