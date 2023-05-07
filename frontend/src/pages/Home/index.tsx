@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {HOST, PORT} from '@env';
 import {ScrollView, TouchableOpacity, View, Text} from 'react-native';
 import StyleSheet from 'react-native-media-query';
 
@@ -13,6 +14,9 @@ import PeopleIcon from 'assets/imgs/people-icon.svg';
 import {NavigationProp} from '@react-navigation/native';
 
 import strapi from '../../config/strapi';
+
+const hostname = HOST;
+const port = PORT;
 
 async function getPropostas() {
   return strapi
@@ -41,7 +45,6 @@ export default function Welcome({navigation}: WelcomeType) {
 
   useEffect(() => {
     let p: Array<any> = [];
-    //console.log('useEffect');
     getPropostas()
       .then(data => {
         for (let i = 0; i < data.length; i++) {
@@ -49,7 +52,7 @@ export default function Welcome({navigation}: WelcomeType) {
           let t = proposta.tags;
           let tags: Array<string> = [];
           let capa =
-            'http://192.168.18.6:1337' + proposta.capa.data.attributes.url;
+            `http://${hostname}:${port}` + proposta.capa.data.attributes.url;
           let autor = proposta.usuario.data.attributes.nome;
           let id = data[i].id;
           let texto = proposta.texto;
@@ -72,7 +75,6 @@ export default function Welcome({navigation}: WelcomeType) {
             />,
           );
         }
-        //console.log(data);
         setPropostas(p);
       })
       .catch(error => {

@@ -9,6 +9,7 @@
       "assets/*": ["assets/*"],
       "components/*": ["src/components/*"],
       "src/*": ["src/*"]
-    }
+    },
+    "typeRoots": ["./types"]
   }
 }
