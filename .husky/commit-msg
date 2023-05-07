@@ -1,4 +1,3 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
-npx --no -- commitlint --config "$(if [ "$PWD" == "$GIT_PREFIX/frontend" ]; then echo ./frontend/commitlint.config.js; else echo ./backend/commitlint.config.js; fi)" --edit "$1"
-
+npx --no -- commitlint --config "$(if [[ "$PWD" == "$GIT_PREFIX/frontend"* ]]; then echo ./frontend/commitlint.config.js; else echo ./backend/commitlint.config.js; fi)" --edit "$1"
