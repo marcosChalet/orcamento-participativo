@@ -12,8 +12,7 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest",
-    "prepare": "cd .. && husky install"
+    "test": "jest"
   },
   "dependencies": {
     "@react-navigation/native": "^6.1.6",
