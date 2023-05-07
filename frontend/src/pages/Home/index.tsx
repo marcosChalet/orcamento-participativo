@@ -16,7 +16,6 @@ import {NavigationProp} from '@react-navigation/native';
 import strapi from '../../config/strapi';
 
 const hostname = HOST;
-const port = PORT;
 
 async function getPropostas() {
   return strapi
@@ -52,7 +51,7 @@ export default function Welcome({navigation}: WelcomeType) {
           let t = proposta.tags;
           let tags: Array<string> = [];
           let capa =
-            `http://${hostname}:${port}` + proposta.capa.data.attributes.url;
+            `http://${hostname}:${PORT}` + proposta.capa.data.attributes.url;
           let autor = proposta.usuario.data.attributes.nome;
           let id = data[i].id;
           let texto = proposta.texto;

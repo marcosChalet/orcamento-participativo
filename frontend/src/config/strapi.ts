@@ -1,12 +1,8 @@
 import Strapi from 'strapi-sdk-js';
 import {STRAPI_KEY, HOST, PORT} from '@env';
 
-const localIP: string = HOST;
-const port: number = PORT;
-const strapiKey: string = `${STRAPI_KEY}`;
-
 const api = new Strapi({
-  url: `http://${localIP}:${port}`,
+  url: `http://${HOST}:${PORT}`,
   prefix: '/api',
   store: {
     key: 'strapi_jwt',
@@ -15,7 +11,7 @@ const api = new Strapi({
   },
   axiosOptions: {
     headers: {
-      Authorization: `Bearer ${strapiKey}`,
+      Authorization: `Bearer ${STRAPI_KEY}`,
       'Content-Type': 'application/json',
     },
   },
