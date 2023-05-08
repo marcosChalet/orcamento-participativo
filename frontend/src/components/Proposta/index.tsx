@@ -20,6 +20,7 @@ type propostaType = {
   id:number;
   texto:string;
   nav:NavigationProp<any, any>;
+  tipo:string;
 };
 
 export default function Proposta(props: propostaType) {
@@ -60,6 +61,7 @@ export default function Proposta(props: propostaType) {
       author: props.author,
       imageUrl: props.imageUrl,
       texto: props.texto,
+      tipo: props.tipo,
     })
   }
 

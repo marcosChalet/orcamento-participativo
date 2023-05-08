@@ -65,8 +65,9 @@ const {styles} = StyleSheet.create({
     marginTop: 7,
   },
   description: {
+    fontFamily: "System Font",
     fontSize: 16,
-    lineHeight: 16,
+    lineHeight: 18,
     paddingLeft: 2,
     paddingTop: 15,
     marginBottom: 24,

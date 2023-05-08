@@ -137,7 +137,7 @@ export default function Login({navigation}: LoginType) {
         </Button>
 
         <View style={styles.newAccountWrapper}>
-          <AppText>Ainda não tem conta? </AppText>
+          <AppText style={styles.textStyle}>Ainda não tem conta? </AppText>
           <TouchableOpacity>
             <AppText style={styles.newAccountText}>Se cadastre aqui.</AppText>
           </TouchableOpacity>
@@ -151,7 +151,11 @@ const {styles} = StyleSheet.create({
   scrollView: {
     flexGrow: 1,
   },
+  textStyle: {
+    fontFamily: "System font",
+  },
   container: {
+    fontFamily: "System font",
     flex: 1,
     minHeight: 550,
     justifyContent: 'center',
@@ -188,6 +192,7 @@ const {styles} = StyleSheet.create({
     color: '#444',
   },
   inputText: {
+    fontFamily: "System font",
     fontSize: 16,
     marginBottom: 5,
   },
@@ -203,6 +208,8 @@ const {styles} = StyleSheet.create({
     flexDirection: 'row',
   },
   newAccountText: {
+    fontFamily: "System font",
+    fontWeight: 'bold',
     justifyContent: 'center',
     alignItems: 'center',
     color: '#F08D60',

@@ -48,6 +48,7 @@ export default function Welcome({navigation}: WelcomeType) {
       .then(data => {
         for (let i = 0; i < data.length; i++) {
           let proposta = data[i].attributes;
+          //console.log(proposta)
           let t = proposta.tags;
           let tags: Array<string> = [];
           let capa =
@@ -55,6 +56,8 @@ export default function Welcome({navigation}: WelcomeType) {
           let autor = proposta.usuario.data.attributes.nome;
           let id = data[i].id;
           let texto = proposta.texto;
+          let tipo = proposta.Tipo;
+          //console.log(tipo);
           for (const [key, value] of Object.entries(t)) {
             tags.push(String(value));
           }
@@ -71,6 +74,7 @@ export default function Welcome({navigation}: WelcomeType) {
               id={id}
               nav={navigation}
               texto={texto}
+              tipo={tipo}
             />,
           );
         }
@@ -146,6 +150,7 @@ const {styles} = StyleSheet.create({
     paddingLeft: 2,
   },
   description: {
+    fontFamily: "System font",
     fontSize: 16,
     lineHeight: 16,
     paddingLeft: 2,

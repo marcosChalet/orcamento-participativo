@@ -15,6 +15,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@miblanchard/react-native-slider": "^2.3.1",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
     "@ronradtke/react-native-markdown-display": "^8.0.0",
