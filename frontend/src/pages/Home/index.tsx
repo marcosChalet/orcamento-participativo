@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {HOST, PORT} from '@env';
+import {REACT_APP_HOST, REACT_APP_PORT} from '@env';
 import {ScrollView, TouchableOpacity, View, Text} from 'react-native';
 import StyleSheet from 'react-native-media-query';
 
@@ -15,7 +15,7 @@ import {NavigationProp} from '@react-navigation/native';
 
 import strapi from '../../config/strapi';
 
-const hostname = HOST;
+const hostname = REACT_APP_HOST;
 
 async function getPropostas() {
   return strapi
@@ -52,7 +52,8 @@ export default function Welcome({navigation}: WelcomeType) {
           let t = proposta.tags;
           let tags: Array<string> = [];
           let capa =
-            `http://${hostname}:${PORT}` + proposta.capa.data.attributes.url;
+            `http://${hostname}:${REACT_APP_PORT}` +
+            proposta.capa.data.attributes.url;
           let autor = proposta.usuario.data.attributes.nome;
           let id = data[i].id;
           let texto = proposta.texto;
@@ -150,7 +151,7 @@ const {styles} = StyleSheet.create({
     paddingLeft: 2,
   },
   description: {
-    fontFamily: "System font",
+    fontFamily: 'System font',
     fontSize: 16,
     lineHeight: 16,
     paddingLeft: 2,
