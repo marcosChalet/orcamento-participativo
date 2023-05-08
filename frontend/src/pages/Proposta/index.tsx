@@ -25,19 +25,27 @@ export default function Proposta({navigation}: PropostaType) {
         if (route.params["tipo"] == "N-CUT") {
             // navegar para a página de votação do N-CUT
             console.log("N-CUT")
-            navigation.navigate("Votação N-CUT")
+            navigation.navigate("Votação N-CUT", {
+                id: id
+            })
         } else if (route.params["tipo"] == "Approval-1") {
             // navegar para a página de votação do Approval-1
             console.log("Approval-1")
-            navigation.navigate("Votação Aprova-Um")
+            navigation.navigate("Votação Aprova-Um", {
+                id: id
+            })
         } else if (route.params["tipo"] == "Knapsack") {
             // navegar para a página de votação do Knapsack
             console.log("Knapsack")
-            navigation.navigate("Votação Mochileiro")
+            navigation.navigate("Votação Mochileiro", {
+                id: id
+            })
         } else if (route.params["tipo"] == "YES-NO") {
             // navegar para a página de votação do YES-NO
             console.log("YES-NO")
-            navigation.navigate("Votação Sim-Não")
+            navigation.navigate("Votação Sim-Não", {
+                id: id
+            })
         }
     }
 
