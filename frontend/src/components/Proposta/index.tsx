@@ -71,8 +71,6 @@ export default function Proposta(props: propostaType) {
         <ImageBackground
           style={styles.imageContainer}
           imageStyle={styles.mainImageStyle}
-          //source={require('../../../assets/imgs/UFCA.jpg')}
-          //source={{uri: 'https://s2.glbimg.com/KID1vUw1si7u76t4Z1MtVKpx5-8=/0x0:1127x628/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2019/a/D/3zUAHBRNug7N5x8X1xtw/federal-do-cariri.jpg'}}
           source={{uri: props.imageUrl}}
           resizeMode="cover"
         />

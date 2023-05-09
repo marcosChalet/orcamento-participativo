@@ -5,7 +5,6 @@ import {useRoute} from '@react-navigation/native';
 import {Alert, ImageBackground, ScrollView, View} from 'react-native';
 import {StyleSheet} from 'react-native';
 import {NavigationProp} from '@react-navigation/native';
-
 import Markdown from '@ronradtke/react-native-markdown-display';
 
 import AppText from 'components/ui/AppText';

@@ -1,22 +1,21 @@
 import React, {useContext, useRef, useState} from 'react';
 import {ScrollView, TextInput, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-media-query';
+import {NavigationProp} from '@react-navigation/native';
 
 import AppText from 'components/ui/AppText';
 import Button from 'components/ui/Button';
 import EyeOn from 'assets/imgs/eye-on.svg';
 import EyeOff from 'assets/imgs/eye-off.svg';
 
-import {NavigationProp} from '@react-navigation/native';
-
 import strapi from '../../config/strapi';
 
-import {STRAPI_KEY, HOST, PORT} from '@env';
+import {REACT_APP_STRAPI_KEY, REACT_APP_HOST, REACT_APP_PORT} from '@env';
 import UserContext from '../../context/GlobalContext';
 
 async function authenticate(user: string) {
   console.log(user);
-  console.log(STRAPI_KEY, HOST, PORT);
+  console.log(REACT_APP_STRAPI_KEY, REACT_APP_HOST, REACT_APP_PORT);
   return strapi
     .find('usuarios', {
       filters: {
@@ -80,7 +79,6 @@ export default function Login({navigation}: LoginType) {
       })
       .catch(error => {
         console.log(error);
-        //console.log(error.response.data);
       });
   }
 

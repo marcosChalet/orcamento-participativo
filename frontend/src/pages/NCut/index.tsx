@@ -1,11 +1,10 @@
 import React, {useState, useEffect, useContext} from 'react';
 
-import {HOST, PORT} from '@env';
+import {REACT_APP_HOST, REACT_APP_PORT} from '@env';
 
 import {Alert, ScrollView, StyleSheet, View} from 'react-native';
 import {Slider} from '@miblanchard/react-native-slider';
 import AppText from 'components/ui/AppText';
-
 import NCutSlider from 'components/NCutSlider';
 
 import {NavigationProp} from '@react-navigation/native';
@@ -14,8 +13,6 @@ import {useRoute} from '@react-navigation/native';
 import strapi from '../../config/strapi';
 import Button from 'components/ui/Button';
 import UserContext from '../../context/GlobalContext';
-
-const hostname = HOST;
 
 type NCutType = {
   navigation: NavigationProp<any, any>;
