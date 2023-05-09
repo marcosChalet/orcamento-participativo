@@ -36,8 +36,8 @@ export default function Routes() {
           name="Proposta"
           component={Proposta}
           initialParams={{
-            id:0,
-            titulo:"",
+            id: 0,
+            titulo: '',
           }}
           options={{headerShown: true}}
         />

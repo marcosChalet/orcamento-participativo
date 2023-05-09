@@ -1,21 +1,16 @@
 import React, {useRef, useState} from 'react';
 import {ScrollView, TextInput, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-media-query';
+import {NavigationProp} from '@react-navigation/native';
 
 import AppText from 'components/ui/AppText';
 import Button from 'components/ui/Button';
 import EyeOn from 'assets/imgs/eye-on.svg';
 import EyeOff from 'assets/imgs/eye-off.svg';
 
-import {NavigationProp} from '@react-navigation/native';
-
 import strapi from '../../config/strapi';
 
-import {STRAPI_KEY, HOST, PORT} from '@env';
-
 async function authenticate(user: string) {
-  console.log(user);
-  console.log(STRAPI_KEY, HOST, PORT)
   return strapi
     .find('usuarios', {
       filters: {
@@ -28,8 +23,7 @@ async function authenticate(user: string) {
       return data.data;
     })
     .catch(error => {
-      console.log(error)
-      //console.log(error.response.data);
+      console.log(error);
     });
 }
 
@@ -73,7 +67,6 @@ export default function Login({navigation}: LoginType) {
       })
       .catch(error => {
         console.log(error);
-        //console.log(error.response.data);
       });
   }
 
@@ -152,10 +145,10 @@ const {styles} = StyleSheet.create({
     flexGrow: 1,
   },
   textStyle: {
-    fontFamily: "System font",
+    fontFamily: 'System font',
   },
   container: {
-    fontFamily: "System font",
+    fontFamily: 'System font',
     flex: 1,
     minHeight: 550,
     justifyContent: 'center',
@@ -192,7 +185,7 @@ const {styles} = StyleSheet.create({
     color: '#444',
   },
   inputText: {
-    fontFamily: "System font",
+    fontFamily: 'System font',
     fontSize: 16,
     marginBottom: 5,
   },
@@ -208,7 +201,7 @@ const {styles} = StyleSheet.create({
     flexDirection: 'row',
   },
   newAccountText: {
-    fontFamily: "System font",
+    fontFamily: 'System font',
     fontWeight: 'bold',
     justifyContent: 'center',
     alignItems: 'center',

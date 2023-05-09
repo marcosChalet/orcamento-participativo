@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {REACT_APP_HOST, REACT_APP_PORT} from '@env';
 import {ScrollView, TouchableOpacity, View, Text} from 'react-native';
 import StyleSheet from 'react-native-media-query';
+import {NavigationProp} from '@react-navigation/native';
 
 import AppText from 'components/ui/AppText';
 import Proposta from '../../components/Proposta';
@@ -10,8 +11,6 @@ import HomeIcon from 'assets/imgs/home-icon.svg';
 import HeartIcon from 'assets/imgs/heart-icon.svg';
 import ChatIcon from 'assets/imgs/chat-icon.svg';
 import PeopleIcon from 'assets/imgs/people-icon.svg';
-
-import {NavigationProp} from '@react-navigation/native';
 
 import strapi from '../../config/strapi';
 
@@ -48,7 +47,6 @@ export default function Welcome({navigation}: WelcomeType) {
       .then(data => {
         for (let i = 0; i < data.length; i++) {
           let proposta = data[i].attributes;
-          //console.log(proposta)
           let t = proposta.tags;
           let tags: Array<string> = [];
           let capa =
@@ -58,7 +56,6 @@ export default function Welcome({navigation}: WelcomeType) {
           let id = data[i].id;
           let texto = proposta.texto;
           let tipo = proposta.Tipo;
-          //console.log(tipo);
           for (const [key, value] of Object.entries(t)) {
             tags.push(String(value));
           }

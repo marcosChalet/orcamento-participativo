@@ -17,10 +17,10 @@ type propostaType = {
   author: string;
   finalDate: Date;
   imageUrl: string;
-  id:number;
-  texto:string;
-  nav:NavigationProp<any, any>;
-  tipo:string;
+  id: number;
+  texto: string;
+  nav: NavigationProp<any, any>;
+  tipo: string;
 };
 
 export default function Proposta(props: propostaType) {
@@ -53,7 +53,7 @@ export default function Proposta(props: propostaType) {
   finalCost = finalCost.replace(/\d{1,3}(?=(\d{3})+(?!\d))/g, '$&.');
 
   function onClick() {
-    props.nav.navigate("Proposta", {
+    props.nav.navigate('Proposta', {
       id: props.id,
       titulo: props.title,
       description: props.description,
@@ -62,17 +62,15 @@ export default function Proposta(props: propostaType) {
       imageUrl: props.imageUrl,
       texto: props.texto,
       tipo: props.tipo,
-    })
+    });
   }
 
   return (
-    <TouchableOpacity onPress = {onClick}>
+    <TouchableOpacity onPress={onClick}>
       <View style={styles.card}>
         <ImageBackground
           style={styles.imageContainer}
           imageStyle={styles.mainImageStyle}
-          //source={require('../../../assets/imgs/UFCA.jpg')}
-          //source={{uri: 'https://s2.glbimg.com/KID1vUw1si7u76t4Z1MtVKpx5-8=/0x0:1127x628/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2019/a/D/3zUAHBRNug7N5x8X1xtw/federal-do-cariri.jpg'}}
           source={{uri: props.imageUrl}}
           resizeMode="cover"
         />
@@ -103,9 +101,7 @@ export default function Proposta(props: propostaType) {
                   resizeMode="cover"
                 />
               </View>
-              <AppText style={styles.miniBiggerText}>
-                {props.author}
-              </AppText>
+              <AppText style={styles.miniBiggerText}>{props.author}</AppText>
             </View>
 
             <View style={styles.timeContainer}>
