@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useContext, useRef, useState} from 'react';
 import {ScrollView, TextInput, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-media-query';
 
@@ -12,6 +12,7 @@ import {NavigationProp} from '@react-navigation/native';
 import strapi from '../../config/strapi';
 
 import {STRAPI_KEY, HOST, PORT} from '@env';
+import UserContext from '../../context/GlobalContext';
 
 async function authenticate(user: string) {
   console.log(user);
@@ -44,6 +45,8 @@ export default function Login({navigation}: LoginType) {
   const passwordRef = useRef<TextInput>(null);
   const [hidePassword, setHidePassword] = useState(true);
 
+  const { userId, logarUsuario } = useContext(UserContext);
+
   function onSubmit() {
     if (login === '' || login === null) {
       setLogin(curr => curr ?? '');
@@ -63,6 +66,10 @@ export default function Login({navigation}: LoginType) {
       .then(data => {
         if (data.length == 1) {
           let user = data[0].attributes;
+          //console.log(data[0]);
+          let id = data[0].id;
+          //console.log(id);
+          logarUsuario?.(id);
           let nome = user.nome;
           let matricula = user.matricula;
           let email = user.email;
@@ -86,64 +93,64 @@ export default function Login({navigation}: LoginType) {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollView}>
-      <View style={styles.container}>
-        <AppText style={styles.screenTitle}>Login</AppText>
-        <View style={styles.fullWidth}>
-          <AppText style={[styles.inputText]}>
-            {alertInputError(login)}
-            E-mail institucional ou matrícula
-          </AppText>
-          <TextInput
-            ref={loginRef}
-            onChangeText={setLogin}
-            autoCapitalize="none"
-            keyboardType="email-address"
-            style={styles.input}
-            placeholderTextColor="#0004"
-            placeholder="Digite..."
-          />
-        </View>
-        <View style={[styles.fullWidth, styles.inputWrapper]}>
-          <AppText style={styles.inputText}>
-            {alertInputError(password)}
-            Senha
-          </AppText>
-          <View style={styles.password}>
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        <View style={styles.container}>
+          <AppText style={styles.screenTitle}>Login</AppText>
+          <View style={styles.fullWidth}>
+            <AppText style={[styles.inputText]}>
+              {alertInputError(login)}
+              E-mail institucional ou matrícula
+            </AppText>
             <TextInput
-              ref={passwordRef}
-              onChangeText={setPassword}
-              secureTextEntry={hidePassword}
+              ref={loginRef}
+              onChangeText={setLogin}
               autoCapitalize="none"
-              keyboardType="default"
+              keyboardType="email-address"
               style={styles.input}
               placeholderTextColor="#0004"
               placeholder="Digite..."
             />
-            <TouchableOpacity
-              onPress={() => setHidePassword(!hidePassword)}
-              style={styles.eyeIcon}>
-              {hidePassword ? (
-                <EyeOff width={24} height={24} />
-              ) : (
-                <EyeOn width={24} height={24} />
-              )}
+          </View>
+          <View style={[styles.fullWidth, styles.inputWrapper]}>
+            <AppText style={styles.inputText}>
+              {alertInputError(password)}
+              Senha
+            </AppText>
+            <View style={styles.password}>
+              <TextInput
+                ref={passwordRef}
+                onChangeText={setPassword}
+                secureTextEntry={hidePassword}
+                autoCapitalize="none"
+                keyboardType="default"
+                style={styles.input}
+                placeholderTextColor="#0004"
+                placeholder="Digite..."
+              />
+              <TouchableOpacity
+                onPress={() => setHidePassword(!hidePassword)}
+                style={styles.eyeIcon}>
+                {hidePassword ? (
+                  <EyeOff width={24} height={24} />
+                ) : (
+                  <EyeOn width={24} height={24} />
+                )}
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <Button style={styles.buttonStyle} clickFn={onSubmit}>
+            <AppText style={styles.buttonText}>Login</AppText>
+          </Button>
+
+          <View style={styles.newAccountWrapper}>
+            <AppText style={styles.textStyle}>Ainda não tem conta? </AppText>
+            <TouchableOpacity>
+              <AppText style={styles.newAccountText}>Se cadastre aqui.</AppText>
             </TouchableOpacity>
           </View>
         </View>
-
-        <Button style={styles.buttonStyle} clickFn={onSubmit}>
-          <AppText style={styles.buttonText}>Login</AppText>
-        </Button>
-
-        <View style={styles.newAccountWrapper}>
-          <AppText style={styles.textStyle}>Ainda não tem conta? </AppText>
-          <TouchableOpacity>
-            <AppText style={styles.newAccountText}>Se cadastre aqui.</AppText>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
   );
 }
 

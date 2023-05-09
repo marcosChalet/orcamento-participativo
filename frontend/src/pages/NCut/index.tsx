@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 
 import {HOST, PORT} from '@env';
 
@@ -13,6 +13,7 @@ import {NavigationProp} from '@react-navigation/native';
 import { useRoute } from "@react-navigation/native";
 import strapi from '../../config/strapi';
 import Button from 'components/ui/Button';
+import UserContext from '../../context/GlobalContext';
 
 const hostname = HOST;
 
@@ -44,10 +45,18 @@ export default function NCut({navigation}: NCutType) {
     const [sliders, setSliders] = useState<any[]>([]);
     const [valorAlocado, setValorAlocado] = useState(0);
     const [valorMaximo, setValorMaximo] = useState(0);
+    const { userId, logarUsuario } = useContext(UserContext);
 
     const route:any = useRoute();
 
     let id = parseInt(route.params["id"]);
+
+    function onSubmit() {
+        console.log("Registrando voto do usuário: ", userId);
+        console.log("Voto", valores);
+        console.log("Id da Proposta", id);
+        // registrar o voto
+    }
 
     function valorColor(soma:number) {
         if (soma > valorMaximo) {
@@ -116,10 +125,10 @@ export default function NCut({navigation}: NCutType) {
             <ScrollView style={styles.scrollView}>
                 <View style={styles.container}>
                     <AppText style={styles.title}>Votação N-CUT</AppText>
-                    <AppText style={styles.description}>Utilize os seletores abaixo ou as caixas de texto para selecionar os valores que você deseja que sejam alocados para cada área.</AppText>
+                    <AppText style={styles.description}>Utilize os seletores abaixo ou as caixas de texto para especificar os valores que você deseja que sejam alocados para cada área.</AppText>
                     {sliders}
                 </View>
-                <Button style={styles.buttonStyle}>
+                <Button style={styles.buttonStyle} clickFn={onSubmit}>
                     <AppText style={styles.buttonText}>Enviar Voto</AppText>
                 </Button>
             </ScrollView>
