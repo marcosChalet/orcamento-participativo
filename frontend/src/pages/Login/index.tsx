@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useContext, useRef, useState} from 'react';
 import {ScrollView, TextInput, TouchableOpacity, View} from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import {NavigationProp} from '@react-navigation/native';
@@ -10,7 +10,12 @@ import EyeOff from 'assets/imgs/eye-off.svg';
 
 import strapi from '../../config/strapi';
 
+import {REACT_APP_STRAPI_KEY, REACT_APP_HOST, REACT_APP_PORT} from '@env';
+import UserContext from '../../context/GlobalContext';
+
 async function authenticate(user: string) {
+  console.log(user);
+  console.log(REACT_APP_STRAPI_KEY, REACT_APP_HOST, REACT_APP_PORT);
   return strapi
     .find('usuarios', {
       filters: {
@@ -24,6 +29,7 @@ async function authenticate(user: string) {
     })
     .catch(error => {
       console.log(error);
+      //console.log(error.response.data);
     });
 }
 
@@ -37,6 +43,8 @@ export default function Login({navigation}: LoginType) {
   const loginRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
   const [hidePassword, setHidePassword] = useState(true);
+
+  const {userId, logarUsuario} = useContext(UserContext);
 
   function onSubmit() {
     if (login === '' || login === null) {
@@ -57,6 +65,10 @@ export default function Login({navigation}: LoginType) {
       .then(data => {
         if (data.length == 1) {
           let user = data[0].attributes;
+          //console.log(data[0]);
+          let id = data[0].id;
+          //console.log(id);
+          logarUsuario?.(id);
           let nome = user.nome;
           let matricula = user.matricula;
           let email = user.email;

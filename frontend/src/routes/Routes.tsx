@@ -30,7 +30,9 @@ export default function Routes() {
         <Stack.Screen
           name="Home"
           component={Home}
-          options={{headerShown: false}}
+          options={{
+            headerShown: false,
+          }}
         />
         <Stack.Screen
           name="Proposta"

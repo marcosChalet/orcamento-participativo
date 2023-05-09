@@ -1,11 +1,18 @@
-import React, {useState, useEffect} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
-import {NavigationProp, useRoute} from '@react-navigation/native';
+import React, {useState, useEffect, useContext} from 'react';
 
+import {REACT_APP_HOST, REACT_APP_PORT} from '@env';
+
+import {Alert, ScrollView, StyleSheet, View} from 'react-native';
+import {Slider} from '@miblanchard/react-native-slider';
 import AppText from 'components/ui/AppText';
 import NCutSlider from 'components/NCutSlider';
+
+import {NavigationProp} from '@react-navigation/native';
+
+import {useRoute} from '@react-navigation/native';
 import strapi from '../../config/strapi';
 import Button from 'components/ui/Button';
+import UserContext from '../../context/GlobalContext';
 
 type NCutType = {
   navigation: NavigationProp<any, any>;
@@ -24,10 +31,44 @@ async function getAreas(id: number) {
     });
 }
 
+async function submitVote(
+  userId: number,
+  proposta: number,
+  voto: {[key: number]: number},
+) {
+  return strapi
+    .create('n-cuts', {
+      proposta: {
+        connect: [proposta],
+      },
+      usuario: {
+        connect: [userId],
+      },
+      voto: voto,
+    })
+    .then((data: any) => {
+      return data.data;
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}
+
 function getFormattedValue(value: number) {
   let finalCost = String(value.toFixed(2)).replace('.', ',');
   finalCost = finalCost.replace(/\d{1,3}(?=(\d{3})+(?!\d))/g, '$&.');
   return finalCost;
+}
+
+function votacaoStrings(areas: String[], valores: {[key: number]: number}) {
+  let string: string = '';
+  let soma = 0;
+  for (let i = 0; i < areas.length; i++) {
+    string += areas[i] + ': R$ ' + getFormattedValue(valores[i]) + '\n';
+    soma += valores[i];
+  }
+  string += '\nValor total: R$ ' + getFormattedValue(soma);
+  return string;
 }
 
 export default function NCut({navigation}: NCutType) {
@@ -35,10 +76,48 @@ export default function NCut({navigation}: NCutType) {
   const [sliders, setSliders] = useState<any[]>([]);
   const [valorAlocado, setValorAlocado] = useState(0);
   const [valorMaximo, setValorMaximo] = useState(0);
+  const [areas, setAreas] = useState<String[]>([]);
+  const {userId, logarUsuario} = useContext(UserContext);
 
   const route: any = useRoute();
 
   let id = parseInt(route.params.id);
+
+  function onSubmit() {
+    if (valorAlocado > valorMaximo) {
+      Alert.alert(
+        'Valor inválido!',
+        'O valor que você alocou é maior que o orçamento total.',
+      );
+    } else {
+      let valoresAlert: string = votacaoStrings(areas, valores);
+      Alert.alert('Confira os valores de sua votação: ', valoresAlert, [
+        {text: 'Cancelar', style: 'cancel'},
+        {
+          text: 'Enviar voto',
+          onPress: () => {
+            submitVote(userId, id, valores)
+              .then(data => {
+                //console.log(data);
+                if (Object.keys(data).length > 0) {
+                  Alert.alert(
+                    'Seu voto foi registrado!',
+                    'Obrigado por participar desta votação.',
+                    [{text: 'OK', onPress: () => navigation.goBack()}],
+                  );
+                }
+              })
+              .catch(error => {
+                Alert.alert(
+                  'Algo deu errado!',
+                  'Infelizmente, não conseguimos registrar o seu voto no nosso banco de dados. Por favor, tente novamente! Se mesmo assim você não conseguir, entre em contato com os responsáveis pelo app.',
+                );
+              });
+          },
+        },
+      ]);
+    }
+  }
 
   function valorColor(soma: number) {
     if (soma > valorMaximo) {
@@ -78,10 +157,12 @@ export default function NCut({navigation}: NCutType) {
         setValorMaximo(valor);
 
         let valoresIniciais: {[key: number]: number} = {};
+        let areasStrings = [];
 
         let size = Object.keys(areas).length;
         for (const k in areas) {
           valoresIniciais[parseInt(k)] = Math.floor(valor / size);
+          areasStrings.push(areas[k]);
           sliders.push(
             <NCutSlider
               id={parseInt(k)}
@@ -96,6 +177,7 @@ export default function NCut({navigation}: NCutType) {
         }
         setSliders(sliders);
         setValores(valoresIniciais);
+        setAreas(areasStrings);
       })
       .catch(error => {
         console.log(error);
@@ -108,12 +190,12 @@ export default function NCut({navigation}: NCutType) {
         <View style={styles.container}>
           <AppText style={styles.title}>Votação N-CUT</AppText>
           <AppText style={styles.description}>
-            Utilize os seletores abaixo ou as caixas de texto para selecionar os
-            valores que você deseja que sejam alocados para cada área.
+            Utilize os seletores abaixo ou as caixas de texto para especificar
+            os valores que você deseja que sejam alocados para cada área.
           </AppText>
           {sliders}
         </View>
-        <Button style={styles.buttonStyle}>
+        <Button style={styles.buttonStyle} clickFn={onSubmit}>
           <AppText style={styles.buttonText}>Enviar Voto</AppText>
         </Button>
       </ScrollView>

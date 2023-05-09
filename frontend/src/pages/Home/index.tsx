@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {REACT_APP_HOST, REACT_APP_PORT} from '@env';
-import {ScrollView, TouchableOpacity, View, Text} from 'react-native';
+import {ScrollView, TouchableOpacity, View, Text, Alert} from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import {NavigationProp} from '@react-navigation/native';
 
@@ -40,6 +40,25 @@ type WelcomeType = {
 
 export default function Welcome({navigation}: WelcomeType) {
   const [propostas, setPropostas] = useState<any[]>([]);
+
+  useEffect(() => {
+    navigation.addListener('beforeRemove', e => {
+      e.preventDefault();
+
+      Alert.alert(
+        'Sair do App?',
+        'Você deseja mesmo sair do app? Você irá deslogar.',
+        [
+          {text: 'Não sair', style: 'cancel', onPress: () => {}},
+          {
+            text: 'Sair do App',
+            style: 'destructive',
+            onPress: () => navigation.dispatch(e.data.action),
+          },
+        ],
+      );
+    });
+  }, [navigation]);
 
   useEffect(() => {
     let p: Array<any> = [];
