@@ -16,7 +16,7 @@ import UserContext from '../../context/GlobalContext';
 
 async function authenticate(user: string) {
   console.log(user);
-  console.log(STRAPI_KEY, HOST, PORT)
+  console.log(STRAPI_KEY, HOST, PORT);
   return strapi
     .find('usuarios', {
       filters: {
@@ -29,7 +29,7 @@ async function authenticate(user: string) {
       return data.data;
     })
     .catch(error => {
-      console.log(error)
+      console.log(error);
       //console.log(error.response.data);
     });
 }
@@ -45,7 +45,7 @@ export default function Login({navigation}: LoginType) {
   const passwordRef = useRef<TextInput>(null);
   const [hidePassword, setHidePassword] = useState(true);
 
-  const { userId, logarUsuario } = useContext(UserContext);
+  const {userId, logarUsuario} = useContext(UserContext);
 
   function onSubmit() {
     if (login === '' || login === null) {
@@ -93,64 +93,64 @@ export default function Login({navigation}: LoginType) {
   }
 
   return (
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        <View style={styles.container}>
-          <AppText style={styles.screenTitle}>Login</AppText>
-          <View style={styles.fullWidth}>
-            <AppText style={[styles.inputText]}>
-              {alertInputError(login)}
-              E-mail institucional ou matrícula
-            </AppText>
+    <ScrollView contentContainerStyle={styles.scrollView}>
+      <View style={styles.container}>
+        <AppText style={styles.screenTitle}>Login</AppText>
+        <View style={styles.fullWidth}>
+          <AppText style={[styles.inputText]}>
+            {alertInputError(login)}
+            E-mail institucional ou matrícula
+          </AppText>
+          <TextInput
+            ref={loginRef}
+            onChangeText={setLogin}
+            autoCapitalize="none"
+            keyboardType="email-address"
+            style={styles.input}
+            placeholderTextColor="#0004"
+            placeholder="Digite..."
+          />
+        </View>
+        <View style={[styles.fullWidth, styles.inputWrapper]}>
+          <AppText style={styles.inputText}>
+            {alertInputError(password)}
+            Senha
+          </AppText>
+          <View style={styles.password}>
             <TextInput
-              ref={loginRef}
-              onChangeText={setLogin}
+              ref={passwordRef}
+              onChangeText={setPassword}
+              secureTextEntry={hidePassword}
               autoCapitalize="none"
-              keyboardType="email-address"
+              keyboardType="default"
               style={styles.input}
               placeholderTextColor="#0004"
               placeholder="Digite..."
             />
-          </View>
-          <View style={[styles.fullWidth, styles.inputWrapper]}>
-            <AppText style={styles.inputText}>
-              {alertInputError(password)}
-              Senha
-            </AppText>
-            <View style={styles.password}>
-              <TextInput
-                ref={passwordRef}
-                onChangeText={setPassword}
-                secureTextEntry={hidePassword}
-                autoCapitalize="none"
-                keyboardType="default"
-                style={styles.input}
-                placeholderTextColor="#0004"
-                placeholder="Digite..."
-              />
-              <TouchableOpacity
-                onPress={() => setHidePassword(!hidePassword)}
-                style={styles.eyeIcon}>
-                {hidePassword ? (
-                  <EyeOff width={24} height={24} />
-                ) : (
-                  <EyeOn width={24} height={24} />
-                )}
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          <Button style={styles.buttonStyle} clickFn={onSubmit}>
-            <AppText style={styles.buttonText}>Login</AppText>
-          </Button>
-
-          <View style={styles.newAccountWrapper}>
-            <AppText style={styles.textStyle}>Ainda não tem conta? </AppText>
-            <TouchableOpacity>
-              <AppText style={styles.newAccountText}>Se cadastre aqui.</AppText>
+            <TouchableOpacity
+              onPress={() => setHidePassword(!hidePassword)}
+              style={styles.eyeIcon}>
+              {hidePassword ? (
+                <EyeOff width={24} height={24} />
+              ) : (
+                <EyeOn width={24} height={24} />
+              )}
             </TouchableOpacity>
           </View>
         </View>
-      </ScrollView>
+
+        <Button style={styles.buttonStyle} clickFn={onSubmit}>
+          <AppText style={styles.buttonText}>Login</AppText>
+        </Button>
+
+        <View style={styles.newAccountWrapper}>
+          <AppText style={styles.textStyle}>Ainda não tem conta? </AppText>
+          <TouchableOpacity>
+            <AppText style={styles.newAccountText}>Se cadastre aqui.</AppText>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </ScrollView>
   );
 }
 
@@ -159,10 +159,10 @@ const {styles} = StyleSheet.create({
     flexGrow: 1,
   },
   textStyle: {
-    fontFamily: "System font",
+    fontFamily: 'System font',
   },
   container: {
-    fontFamily: "System font",
+    fontFamily: 'System font',
     flex: 1,
     minHeight: 550,
     justifyContent: 'center',
@@ -199,7 +199,7 @@ const {styles} = StyleSheet.create({
     color: '#444',
   },
   inputText: {
-    fontFamily: "System font",
+    fontFamily: 'System font',
     fontSize: 16,
     marginBottom: 5,
   },
@@ -215,7 +215,7 @@ const {styles} = StyleSheet.create({
     flexDirection: 'row',
   },
   newAccountText: {
-    fontFamily: "System font",
+    fontFamily: 'System font',
     fontWeight: 'bold',
     justifyContent: 'center',
     alignItems: 'center',

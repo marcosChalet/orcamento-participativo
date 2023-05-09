@@ -43,22 +43,22 @@ export default function Welcome({navigation}: WelcomeType) {
   const [propostas, setPropostas] = useState<any[]>([]);
 
   useEffect(() => {
-    navigation.addListener('beforeRemove', (e) => {
+    navigation.addListener('beforeRemove', e => {
       e.preventDefault();
 
       Alert.alert(
         'Sair do App?',
         'Você deseja mesmo sair do app? Você irá deslogar.',
         [
-          {text: "Não sair", style: 'cancel', onPress: () => {}},
+          {text: 'Não sair', style: 'cancel', onPress: () => {}},
           {
-            text: "Sair do App",
+            text: 'Sair do App',
             style: 'destructive',
             onPress: () => navigation.dispatch(e.data.action),
           },
-        ]
+        ],
       );
-    })
+    });
   }, [navigation]);
 
   useEffect(() => {
@@ -169,7 +169,7 @@ const {styles} = StyleSheet.create({
     paddingLeft: 2,
   },
   description: {
-    fontFamily: "System font",
+    fontFamily: 'System font',
     fontSize: 16,
     lineHeight: 16,
     paddingLeft: 2,
