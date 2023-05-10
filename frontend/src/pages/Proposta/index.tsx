@@ -43,6 +43,30 @@ async function checkNCUT(propostaId: number, userId: number) {
     });
 }
 
+async function checkYesNo(propostaId: number, userId: number) {
+  return strapi
+    .find('yes-nos', {
+      filters: {
+        usuario: {
+          id: {
+            $eq: userId,
+          },
+        },
+        proposta: {
+          id: {
+            $eq: propostaId,
+          }
+        }
+      }
+    })
+    .then((data:any) => {
+      return data.data;
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}
+
 export default function Proposta({navigation}: PropostaType) {
   const {userId, logarUsuario} = useContext(UserContext);
 
@@ -88,10 +112,26 @@ export default function Proposta({navigation}: PropostaType) {
       });
     } else if (route.params.tipo == 'YES-NO') {
       // navegar para a página de votação do YES-NO
-      console.log('YES-NO');
-      navigation.navigate('Votação Sim-Não', {
-        id: id,
-      });
+      //console.log('YES-NO');
+      checkYesNo(id, userId)
+        .then(data => {
+          if (data.length > 0) {
+            Alert.alert(
+              'Usuário já votou!',
+              'Você já votou nesta proposta. Cada usuário só tem direito a um voto!',
+            );
+          } else {
+            navigation.navigate('Votação Sim-Não', {
+              id: id,
+            });
+          }
+        })
+        .catch(error => {
+          Alert.alert(
+            'Algum erro aconteceu!',
+            'Não conseguimos verificar se você já votou ou não nesta proposta. Por favor, tente novamente. Se o erro persistir, entre em contato com os responsáveis pelo app!',
+          );
+        });
     }
   }
 

@@ -29,6 +29,7 @@
     "react-native-safe-area-context": "^4.5.1",
     "react-native-screens": "^3.20.0",
     "react-native-svg": "^13.9.0",
+    "react-native-switch-with-icons": "^3.0.1",
     "strapi-sdk-js": "^2.2.0"
   },
   "devDependencies": {
