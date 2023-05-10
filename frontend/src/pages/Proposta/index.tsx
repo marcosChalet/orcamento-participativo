@@ -12,6 +12,7 @@ import Button from 'components/ui/Button';
 
 import strapi from '../../config/strapi';
 import UserContext from '../../context/GlobalContext';
+import NCutResults from '../../components/NCutResults';
 
 type PropostaType = {
   navigation: NavigationProp<any, any>;
@@ -35,6 +36,30 @@ async function checkNCUT(propostaId: number, userId: number) {
       },
     })
     .then((data: any) => {
+      return data.data;
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}
+
+async function checkYesNo(propostaId: number, userId: number) {
+  return strapi
+    .find('yes-nos', {
+      filters: {
+        usuario: {
+          id: {
+            $eq: userId,
+          },
+        },
+        proposta: {
+          id: {
+            $eq: propostaId,
+          }
+        }
+      }
+    })
+    .then((data:any) => {
       return data.data;
     })
     .catch(error => {
@@ -87,10 +112,26 @@ export default function Proposta({navigation}: PropostaType) {
       });
     } else if (route.params.tipo == 'YES-NO') {
       // navegar para a página de votação do YES-NO
-      console.log('YES-NO');
-      navigation.navigate('Votação Sim-Não', {
-        id: id,
-      });
+      //console.log('YES-NO');
+      checkYesNo(id, userId)
+        .then(data => {
+          if (data.length > 0) {
+            Alert.alert(
+              'Usuário já votou!',
+              'Você já votou nesta proposta. Cada usuário só tem direito a um voto!',
+            );
+          } else {
+            navigation.navigate('Votação Sim-Não', {
+              id: id,
+            });
+          }
+        })
+        .catch(error => {
+          Alert.alert(
+            'Algum erro aconteceu!',
+            'Não conseguimos verificar se você já votou ou não nesta proposta. Por favor, tente novamente. Se o erro persistir, entre em contato com os responsáveis pelo app!',
+          );
+        });
     }
   }
 
@@ -104,6 +145,11 @@ export default function Proposta({navigation}: PropostaType) {
           source={{uri: route.params.imageUrl}}
           resizeMode="cover"
         />
+        <View style={styles.results}>
+          <AppText style={styles.resultsText}>RESULTADOS</AppText>
+          <NCutResults propostaId={id}/>
+        </View>
+
         <Markdown style={style}>{route.params.texto}</Markdown>
 
         <Button style={styles.buttonStyle} clickFn={onClick}>
@@ -159,6 +205,19 @@ const styles = StyleSheet.create({
     paddingLeft: 2,
     marginTop: 7,
   },
+  results: {
+    flex: 1,
+    padding: 10,
+    marginTop: 10,
+    borderRadius: 10,
+    borderColor: '#532B1D',
+    borderWidth: 1,
+  },
+  resultsText: {
+    fontWeight: 'bold',
+    fontSize: 14,
+    textAlign: 'center',
+  }
 });
 
 const style = {

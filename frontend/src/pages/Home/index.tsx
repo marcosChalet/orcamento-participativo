@@ -106,7 +106,7 @@ export default function Welcome({navigation}: WelcomeType) {
     <View style={styles.scrollViewWrapper}>
       <ScrollView style={styles.scrollView}>
         <View style={styles.container}>
-          <AppText style={styles.title}>Oi, Samuel!</AppText>
+          <AppText style={styles.title}>Boas vindas!</AppText>
           <AppText style={styles.subTitle}>Que bom te ver por aqui!</AppText>
           <AppText style={styles.description}>
             Esta é a área em que você poderá ver as propostas e votações que

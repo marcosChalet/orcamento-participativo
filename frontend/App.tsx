@@ -2,7 +2,7 @@ import React from 'react';
 import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
 
 import Routes from './src/routes/Routes';
-import { UserProvider } from './src/context/GlobalContext';
+import {UserProvider} from './src/context/GlobalContext';
 
 export default function App() {
   return (
