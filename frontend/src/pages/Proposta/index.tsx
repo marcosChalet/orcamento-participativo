@@ -13,7 +13,8 @@ import Button from 'components/ui/Button';
 import strapi from '../../config/strapi';
 import UserContext from '../../context/GlobalContext';
 import NCutResults from '../../components/NCutResults';
-import YesNoResults from 'components/YesNoResults';
+import YesNoResults from '../../components/YesNoResults';
+import KnapsackResults from '../../components/KnapsackResults';
 
 type PropostaType = {
   navigation: NavigationProp<any, any>;
@@ -189,8 +190,17 @@ export default function Proposta({navigation}: PropostaType) {
         />
         <View style={styles.results}>
           <AppText style={styles.resultsText}>RESULTADOS</AppText>
+          <View
+            style={{
+              borderBottomColor: '#CAC8C7',
+              borderBottomWidth: StyleSheet.hairlineWidth,
+              marginBottom: 10,
+              marginTop: 10,
+            }}
+          />
           {route.params.tipo == "N-CUT" && <NCutResults propostaId={id}/>}
           {route.params.tipo == "YES-NO" && <YesNoResults propostaId={id}/>}
+          {route.params.tipo == "Knapsack" && <KnapsackResults propostaId={id}/>}
         </View>
 
         <Markdown style={style}>{route.params.texto}</Markdown>
