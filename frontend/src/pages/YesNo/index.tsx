@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, {useContext, useState} from 'react';
 
 import AppText from 'components/ui/AppText';
 import {Alert, Image, ScrollView, StyleSheet, View} from 'react-native';
@@ -8,41 +8,37 @@ import ThumbsDown from 'assets/imgs/thumbsDown.svg';
 import Button from 'components/ui/Button';
 import strapi from '../../config/strapi';
 import UserContext from '../../context/GlobalContext';
-import { NavigationProp, useRoute } from '@react-navigation/native';
+import {NavigationProp, useRoute} from '@react-navigation/native';
 
-function yesStyle(value:boolean) {
+function yesStyle(value: boolean) {
   if (value) {
     return {
       fontWeight: 'bold',
       color: 'rgb(117, 183, 71)',
-    }
+    };
   } else {
     return {
       fontWeight: 'normal',
-      color: 'rgb(170, 170, 170)'
-    }
+      color: 'rgb(170, 170, 170)',
+    };
   }
 }
 
-function noStyle(value:boolean) {
+function noStyle(value: boolean) {
   if (!value) {
     return {
       fontWeight: 'bold',
       color: 'rgb(240, 141, 96)',
-    }
+    };
   } else {
     return {
       fontWeight: 'normal',
-      color: 'rgb(170, 170, 170)'
-    }
+      color: 'rgb(170, 170, 170)',
+    };
   }
 }
 
-async function submitVote(
-  userId: number,
-  proposta: number,
-  voto: string,
-) {
+async function submitVote(userId: number, proposta: number, voto: string) {
   return strapi
     .create('yes-nos', {
       proposta: {
@@ -74,84 +70,80 @@ export default function YesNo({navigation}: YesNoType) {
   let id = parseInt(route.params.id);
 
   function onSubmit() {
-    let valorVoto = "";
+    let valorVoto = '';
     if (voto) {
-      valorVoto = "sim";
+      valorVoto = 'sim';
     } else {
-      valorVoto = "não";
+      valorVoto = 'não';
     }
-    Alert.alert(
-      'Confira a sua votação',
-      `Voto: ${valorVoto}`,
-      [
-        {text: 'Cancelar', style: 'cancel'},
-        {
-          text: 'Enviar voto',
-          onPress: () => {
-            submitVote(userId, id, valorVoto)
-              .then(data => {
-                if (data != undefined) {
-                  if (Object.keys(data).length > 0) {
-                    Alert.alert(
-                      'Seu voto foi registrado!',
-                      'Obrigado por participar desta votação.',
-                      [{text: 'OK', onPress: () => navigation.goBack()}],
-                    );
-                  }
-                } else {
+    Alert.alert('Confira a sua votação', `Voto: ${valorVoto}`, [
+      {text: 'Cancelar', style: 'cancel'},
+      {
+        text: 'Enviar voto',
+        onPress: () => {
+          submitVote(userId, id, valorVoto)
+            .then(data => {
+              if (data != undefined) {
+                if (Object.keys(data).length > 0) {
                   Alert.alert(
-                    'Algo deu errado!',
-                    'Infelizmente, não conseguimos registrar o seu voto no nosso banco de dados. Por favor, tente novamente! Se mesmo assim você não conseguir, entre em contato com os responsáveis pelo app.',
+                    'Seu voto foi registrado!',
+                    'Obrigado por participar desta votação.',
+                    [{text: 'OK', onPress: () => navigation.goBack()}],
                   );
                 }
-              })
-              .catch(error => {
+              } else {
                 Alert.alert(
                   'Algo deu errado!',
                   'Infelizmente, não conseguimos registrar o seu voto no nosso banco de dados. Por favor, tente novamente! Se mesmo assim você não conseguir, entre em contato com os responsáveis pelo app.',
                 );
-              });
-          }
-        }
-      ]
-    )
+              }
+            })
+            .catch(error => {
+              Alert.alert(
+                'Algo deu errado!',
+                'Infelizmente, não conseguimos registrar o seu voto no nosso banco de dados. Por favor, tente novamente! Se mesmo assim você não conseguir, entre em contato com os responsáveis pelo app.',
+              );
+            });
+        },
+      },
+    ]);
   }
 
   return (
-        <View style={styles.container}>
-          <AppText style={styles.title}>Você concorda com esta proposta?</AppText>
-          <View style={styles.row}>
-            <AppText style={noStyle(voto)}>NÃO</AppText>
-            <SwitchWithIcons
-              value={voto}
-              onValueChange={value => {
-                console.log(value);
-                setVoto(value);
-              }}
-              style={styles.switch}
-              icon={{
-                true: require('../../../assets/imgs/thumbsUp.png'),
-                false: require('../../../assets/imgs/thumbsDown.png'),
-              }}
-              thumbColor={{
-                true: "rgb(117, 183, 71)",
-                false: "rgb(240, 141, 96)",
-              }}
-              iconColor={{
-                true: "rgb(255, 255, 255)",
-                false: "rgb(255, 255, 255)",
-              }}
-              trackColor={{
-                true: "rgb(214, 232, 202)",
-                false: "rgb(237, 208, 194)",
-              }}
-            />
-            <AppText style={yesStyle(voto)}>SIM</AppText>
-          </View>
-          <Button style={styles.buttonStyle} clickFn={onSubmit}>
-            <AppText style={styles.buttonText}>Enviar Voto</AppText>
-          </Button>
-        </View>
+    <View style={styles.container}>
+      <AppText style={styles.title}>Você concorda com esta proposta?</AppText>
+      <View style={styles.row}>
+        <AppText style={noStyle(voto)}>NÃO</AppText>
+        <SwitchWithIcons
+          value={voto}
+          onValueChange={value => {
+            console.log(value);
+            setVoto(value);
+          }}
+          style={styles.switch}
+          icon={{
+            true: require('../../../assets/imgs/thumbsUp.png'),
+            false: require('../../../assets/imgs/thumbsDown.png'),
+          }}
+          thumbColor={{
+            true: 'rgb(117, 183, 71)',
+            false: 'rgb(240, 141, 96)',
+          }}
+          iconColor={{
+            true: 'rgb(255, 255, 255)',
+            false: 'rgb(255, 255, 255)',
+          }}
+          trackColor={{
+            true: 'rgb(214, 232, 202)',
+            false: 'rgb(237, 208, 194)',
+          }}
+        />
+        <AppText style={yesStyle(voto)}>SIM</AppText>
+      </View>
+      <Button style={styles.buttonStyle} clickFn={onSubmit}>
+        <AppText style={styles.buttonText}>Enviar Voto</AppText>
+      </Button>
+    </View>
   );
 }
 

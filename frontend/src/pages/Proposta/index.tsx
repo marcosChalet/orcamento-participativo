@@ -57,11 +57,11 @@ async function checkYesNo(propostaId: number, userId: number) {
         proposta: {
           id: {
             $eq: propostaId,
-          }
-        }
-      }
+          },
+        },
+      },
     })
-    .then((data:any) => {
+    .then((data: any) => {
       return data.data;
     })
     .catch(error => {
@@ -81,11 +81,11 @@ async function checkKnapsack(propostaId: number, userId: number) {
         proposta: {
           id: {
             $eq: propostaId,
-          }
-        }
-      }
+          },
+        },
+      },
     })
-    .then((data:any) => {
+    .then((data: any) => {
       return data.data;
     })
     .catch(error => {
@@ -198,9 +198,11 @@ export default function Proposta({navigation}: PropostaType) {
               marginTop: 10,
             }}
           />
-          {route.params.tipo == "N-CUT" && <NCutResults propostaId={id}/>}
-          {route.params.tipo == "YES-NO" && <YesNoResults propostaId={id}/>}
-          {route.params.tipo == "Knapsack" && <KnapsackResults propostaId={id}/>}
+          {route.params.tipo == 'N-CUT' && <NCutResults propostaId={id} />}
+          {route.params.tipo == 'YES-NO' && <YesNoResults propostaId={id} />}
+          {route.params.tipo == 'Knapsack' && (
+            <KnapsackResults propostaId={id} />
+          )}
         </View>
 
         <Markdown style={style}>{route.params.texto}</Markdown>
@@ -270,7 +272,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 14,
     textAlign: 'center',
-  }
+  },
 });
 
 const style = {

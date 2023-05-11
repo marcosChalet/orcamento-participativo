@@ -1,22 +1,25 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import Button from 'components/ui/Button';
 import strapi from '../../config/strapi';
 import UserContext from '../../context/GlobalContext';
 
 import AppText from 'components/ui/AppText';
-import { NavigationProp, useRoute } from '@react-navigation/native';
+import {NavigationProp, useRoute} from '@react-navigation/native';
 import Subproposta from 'components/Subproposta';
 
 import {REACT_APP_HOST, REACT_APP_PORT} from '@env';
-import {ScrollView, TouchableOpacity, View, Text, Alert, StyleSheet} from 'react-native';
+import {
+  ScrollView,
+  TouchableOpacity,
+  View,
+  Text,
+  Alert,
+  StyleSheet,
+} from 'react-native';
 const hostname = REACT_APP_HOST;
 
-async function submitVote(
-  userId: number,
-  proposta: number,
-  voto: number[],
-) {
+async function submitVote(userId: number, proposta: number, voto: number[]) {
   return strapi
     .create('knapsacks', {
       proposta: {
@@ -37,24 +40,29 @@ async function submitVote(
     });
 }
 
-async function getSubpropostas(proposta:number) {
+async function getSubpropostas(proposta: number) {
   return strapi
     .find('propostas', {
       filters: {
         id: {
-          $eq: proposta
-        }
+          $eq: proposta,
+        },
       },
-      populate: ['subpropostas.titulo', 'subpropostas.capa', 'subpropostas.descricao',
-                  'subpropostas.valor', 'subpropostas.usuario.nome'],
+      populate: [
+        'subpropostas.titulo',
+        'subpropostas.capa',
+        'subpropostas.descricao',
+        'subpropostas.valor',
+        'subpropostas.usuario.nome',
+      ],
     })
-    .then((data:any) => {
+    .then((data: any) => {
       return data.data;
     })
     .catch(error => {
-      console.log("Teste 2", error);
+      console.log('Teste 2', error);
       return -1;
-    })
+    });
 }
 
 type KnapsackType = {
@@ -67,30 +75,34 @@ function getFormattedValue(value: number) {
   return finalCost;
 }
 
-function internBarStyle(maxValue:number, alocado:number) {
+function internBarStyle(maxValue: number, alocado: number) {
   if (alocado <= maxValue) {
     return {
-      width: `${100.0*alocado/maxValue}%`,
+      width: `${(100.0 * alocado) / maxValue}%`,
       borderRadius: 5,
       height: 25,
       backgroundColor: 'rgb(117, 183, 71)',
-    }
+    };
   } else {
     return {
-      width: `100%`,
+      width: '100%',
       borderRadius: 5,
       height: 25,
       backgroundColor: 'rgb(240, 141, 96)',
-    }
+    };
   }
 }
 
-export default function Knapsack({navigation}:KnapsackType) {
+export default function Knapsack({navigation}: KnapsackType) {
   const [cand, setCand] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [selectedProjects, setSelectedProjects] = useState<{[key:number]:boolean}>({});
-  const [projectValues, setProjectValues] = useState<{[key:number]:number}>({});
+  const [selectedProjects, setSelectedProjects] = useState<{
+    [key: number]: boolean;
+  }>({});
+  const [projectValues, setProjectValues] = useState<{[key: number]: number}>(
+    {},
+  );
   const [soma, setSoma] = useState<number>(0);
 
   const {userId, logarUsuario} = useContext(UserContext);
@@ -102,16 +114,14 @@ export default function Knapsack({navigation}:KnapsackType) {
 
   function onSubmit() {
     if (soma <= cost) {
-      let votos:number[] = []
+      let votos: number[] = [];
       for (const key in selectedProjects) {
         if (selectedProjects[key]) {
           votos.push(parseInt(key));
         }
       }
-      Alert.alert(
-        'Enviar voto?',
-        'Você deseja enviar seus votos?',
-        [{text:'Não', style:'cancel'},
+      Alert.alert('Enviar voto?', 'Você deseja enviar seus votos?', [
+        {text: 'Não', style: 'cancel'},
         {
           text: 'Sim',
           onPress: () => {
@@ -123,37 +133,37 @@ export default function Knapsack({navigation}:KnapsackType) {
                     'Seu voto foi registrado!',
                     'Obrigado por participar desta votação.',
                     [{text: 'OK', onPress: () => navigation.goBack()}],
-                  )
+                  );
                 } else {
                   Alert.alert(
                     'Não conseguimos registrar o seu voto!',
-                    'Algum error aconteceu. Tente novamente, ou entre em contato com os responsáveis pelo app!'
-                  )
+                    'Algum error aconteceu. Tente novamente, ou entre em contato com os responsáveis pelo app!',
+                  );
                 }
               })
               .catch(error => {
                 Alert.alert(
                   'Não conseguimos registrar o seu voto!',
-                  'Algum error aconteceu. Tente novamente, ou entre em contato com os responsáveis pelo app!'
-                )
+                  'Algum error aconteceu. Tente novamente, ou entre em contato com os responsáveis pelo app!',
+                );
                 console.log(error);
               });
-          }
-        }]
-      )
+          },
+        },
+      ]);
     } else {
       Alert.alert(
         'O orçamento é insuficiente!',
-        'Você selecionou muitos projetos e a soma dos custo excedeu o orçamento total. Por favor, remova algum(ns) projeto(s) e tente novamente.'
-      )
+        'Você selecionou muitos projetos e a soma dos custo excedeu o orçamento total. Por favor, remova algum(ns) projeto(s) e tente novamente.',
+      );
     }
   }
 
-  function changeState(subprojetoId:number) {
+  function changeState(subprojetoId: number) {
     setSelectedProjects(prevState => ({
       ...prevState,
-      [subprojetoId]:!prevState[subprojetoId]
-    }))
+      [subprojetoId]: !prevState[subprojetoId],
+    }));
   }
 
   useEffect(() => {
@@ -164,7 +174,7 @@ export default function Knapsack({navigation}:KnapsackType) {
       }
     }
     setSoma(sum);
-  }, [selectedProjects])
+  }, [selectedProjects]);
 
   useEffect(() => {
     getSubpropostas(id)
@@ -172,20 +182,22 @@ export default function Knapsack({navigation}:KnapsackType) {
         setIsLoading(true);
 
         let candidatos = [];
-        let valores:{[key:number]:number} = {};
-        let selecionados:{[key:number]:boolean} = {};
+        let valores: {[key: number]: number} = {};
+        let selecionados: {[key: number]: boolean} = {};
 
         let subpropostas = data[0].attributes.subpropostas.data;
         //console.log(subpropostas)
         for (let i = 0; i < subpropostas.length; i++) {
           //console.log(subpropostas[i]);
-          let subId:number = parseInt(subpropostas[i].id);
-          let title:string = subpropostas[i].attributes.titulo;
-          let description:string = subpropostas[i].attributes.descricao;
-          let cost:number = subpropostas[i].attributes.valor;
-          let urlSuffix:string = subpropostas[i].attributes.capa.data.attributes.url;
-          let url:string = `http://${hostname}:${REACT_APP_PORT}${urlSuffix}`;
-          let autor:string = subpropostas[i].attributes.usuario.data.attributes.nome;
+          let subId: number = parseInt(subpropostas[i].id);
+          let title: string = subpropostas[i].attributes.titulo;
+          let description: string = subpropostas[i].attributes.descricao;
+          let cost: number = subpropostas[i].attributes.valor;
+          let urlSuffix: string =
+            subpropostas[i].attributes.capa.data.attributes.url;
+          let url: string = `http://${hostname}:${REACT_APP_PORT}${urlSuffix}`;
+          let autor: string =
+            subpropostas[i].attributes.usuario.data.attributes.nome;
 
           valores[subId] = cost;
           selecionados[subId] = false;
@@ -200,8 +212,8 @@ export default function Knapsack({navigation}:KnapsackType) {
               author={autor}
               changeState={changeState}
               nav={navigation}
-            />
-          )
+            />,
+          );
         }
 
         setCand(candidatos);
@@ -211,14 +223,16 @@ export default function Knapsack({navigation}:KnapsackType) {
       })
       .catch(error => {
         console.log(error);
-      })
-  }, [])
+      });
+  }, []);
 
   return (
     <View style={styles.scrollViewWrapper}>
       <ScrollView style={styles.scrollView}>
         <View style={styles.container}>
-        <AppText style={styles.title}>Escolha os projetos que você prefere</AppText>
+          <AppText style={styles.title}>
+            Escolha os projetos que você prefere
+          </AppText>
           {isLoading && <AppText>Carregando...</AppText>}
           {!isLoading && cand}
           <Button style={styles.buttonStyle} clickFn={onSubmit}>
@@ -228,18 +242,18 @@ export default function Knapsack({navigation}:KnapsackType) {
       </ScrollView>
 
       <View style={styles.navbar}>
-        <AppText style={{fontWeight:'bold', fontSize: 18,}}>
+        <AppText style={{fontWeight: 'bold', fontSize: 18}}>
           Valor Alocado: R$ {getFormattedValue(soma)}
         </AppText>
         <View style={styles.bar}>
-          <View style={internBarStyle(cost, soma)}></View>
+          <View style={internBarStyle(cost, soma)} />
         </View>
         <AppText style={styles.description}>
           Você possui R$ {getFormattedValue(cost - soma)} para alocar.
         </AppText>
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
