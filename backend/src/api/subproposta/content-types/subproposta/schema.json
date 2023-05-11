@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "subpropostas",
+  "info": {
+    "singularName": "subproposta",
+    "pluralName": "subpropostas",
+    "displayName": "Subproposta"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "titulo": {
+      "type": "string"
+    },
+    "descricao": {
+      "type": "string"
+    },
+    "capa": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "valor": {
+      "type": "decimal"
+    },
+    "usuario": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::usuario.usuario"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "knapsacks",
+  "info": {
+    "singularName": "knapsack",
+    "pluralName": "knapsacks",
+    "displayName": "Knapsack",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "proposta": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::proposta.proposta"
+    },
+    "usuario": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::usuario.usuario"
+    },
+    "votos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::subproposta.subproposta"
+    }
+  }
+}

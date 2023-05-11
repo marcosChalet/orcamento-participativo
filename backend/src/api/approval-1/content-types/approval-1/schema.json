@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "approval_1s",
+  "info": {
+    "singularName": "approval-1",
+    "pluralName": "approval-1s",
+    "displayName": "Approval-1"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "proposta": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::proposta.proposta"
+    },
+    "usuario": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::usuario.usuario"
+    },
+    "voto": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::proposta.proposta"
+    }
+  }
+}

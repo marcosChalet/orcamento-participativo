@@ -46,6 +46,23 @@
     },
     "texto": {
       "type": "richtext"
+    },
+    "Tipo": {
+      "type": "enumeration",
+      "enum": [
+        "N-CUT",
+        "Knapsack",
+        "Approval-1",
+        "YES-NO"
+      ]
+    },
+    "subpropostas": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::subproposta.subproposta"
+    },
+    "areas": {
+      "type": "json"
     }
   }
 }

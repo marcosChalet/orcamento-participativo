@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "yes_nos",
+  "info": {
+    "singularName": "yes-no",
+    "pluralName": "yes-nos",
+    "displayName": "YES-NO"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "proposta": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::proposta.proposta"
+    },
+    "usuario": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::usuario.usuario"
+    },
+    "voto": {
+      "type": "enumeration",
+      "enum": [
+        "sim",
+        "não"
+      ]
+    }
+  }
+}

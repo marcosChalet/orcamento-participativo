@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "n_cuts",
+  "info": {
+    "singularName": "n-cut",
+    "pluralName": "n-cuts",
+    "displayName": "N-CUT"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "proposta": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::proposta.proposta"
+    },
+    "voto": {
+      "type": "json"
+    },
+    "usuario": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::usuario.usuario"
+    }
+  }
+}
