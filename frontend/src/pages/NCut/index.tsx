@@ -99,11 +99,18 @@ export default function NCut({navigation}: NCutType) {
             submitVote(userId, id, valores)
               .then(data => {
                 //console.log(data);
-                if (Object.keys(data).length > 0) {
+                if (data != undefined) {
+                  if (Object.keys(data).length > 0) {
+                    Alert.alert(
+                      'Seu voto foi registrado!',
+                      'Obrigado por participar desta votação.',
+                      [{text: 'OK', onPress: () => navigation.goBack()}],
+                    );
+                  }
+                } else {
                   Alert.alert(
-                    'Seu voto foi registrado!',
-                    'Obrigado por participar desta votação.',
-                    [{text: 'OK', onPress: () => navigation.goBack()}],
+                    'Algo deu errado!',
+                    'Infelizmente, não conseguimos registrar o seu voto no nosso banco de dados. Por favor, tente novamente! Se mesmo assim você não conseguir, entre em contato com os responsáveis pelo app.',
                   );
                 }
               })

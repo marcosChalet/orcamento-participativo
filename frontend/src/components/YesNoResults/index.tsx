@@ -6,13 +6,13 @@ import NCutGraph from 'components/NCutGraph';
 
 import strapi from '../../config/strapi';
 
-type NCutResultsType = {
+type YesNoResultsType = {
     propostaId:number;
 };
 
 async function getVotes(propostaId:number) {
     return strapi
-    .find('n-cuts', {
+    .find('yes-nos', {
       filters: {
         proposta: {
           id: {
@@ -31,10 +31,10 @@ async function getVotes(propostaId:number) {
     });
 }
 
-export default function NCutResults(props:NCutResultsType) {
+export default function YesNoResults(props:YesNoResultsType) {
 
-    const [areas, setAreas] = useState<string[]>([]);
-    const [values, setValues] = useState<{[key:number]:number}>({});
+    const [areas, setAreas] = useState<string[]>(["sim", "não"]);
+    const [values, setValues] = useState<{[key:string]:number}>({});
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
@@ -46,23 +46,14 @@ export default function NCutResults(props:NCutResultsType) {
 
             let numVotos = data.length;
             console.log("numVotos", numVotos)
-            let results:{[key:number]:number} = {};
-
-            let areasNames:string[] = [];
-            let areasObject = data[0].attributes.proposta.data.attributes.areas;
-
-            for (let key in areasObject) {
-                results[parseInt(key)] = 0;
-                areasNames.push(areasObject[key]);
-            }
-
-            setAreas(areasNames);
+            let results:{[key:string]:number} = {
+                "sim": 0,
+                "não": 0,
+            };
 
             for (let i = 0; i < numVotos; i++) {
                 let voto = data[i].attributes.voto;
-                for (let key in voto) {
-                    results[parseInt(key)] += parseFloat(voto[key])/parseFloat(numVotos);
-                }
+                results[voto] += 1;
             }
 
             setValues(results);
@@ -74,10 +65,6 @@ export default function NCutResults(props:NCutResultsType) {
 
     }, []);
 
-    useEffect(() => {
-
-    }, [areas, values])
-
     return (
         <View style={styles.container}>
             {isLoading && <AppText style={styles.loading}>Carregando...</AppText>}
@@ -85,7 +72,7 @@ export default function NCutResults(props:NCutResultsType) {
                 <NCutGraph
                     areas={areas}
                     values={values}
-                    type="N-CUT"
+                    type="YES-NO"
                 />
             }
         </View>

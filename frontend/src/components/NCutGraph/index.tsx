@@ -5,6 +5,7 @@ import AppText from 'components/ui/AppText';
 
 type NCutGraphType = {
     areas:string[];
+    type:"YES-NO" | "N-CUT";
     values:{[key:number]:number};
 };
 
@@ -21,37 +22,79 @@ export default function NCutGraph(props:NCutGraphType) {
         let max = -1;
         let sum = 0;
         let results:any[] = [];
-        for (let i = 0; i < props.areas.length; i++) {
-            if (props.values[i] > max) {
-                max = props.values[i];
-                sum += props.values[i];
+        if (props.type == "N-CUT") {
+            for (let i = 0; i < props.areas.length; i++) {
+                if (props.values[i] > max) {
+                    max = props.values[i];
+                    sum += props.values[i];
+                }
+            }
+        } else if (props.type == "YES-NO") {
+            for (const key in props.values) {
+                if (props.values[key] > max) {
+                    max = props.values[key];
+                    sum += 1;
+                }
             }
         }
 
-        for (let i = 0; i < props.areas.length; i++) {
-            results.push(
-                <View key={i} style={styles.container}>
-                    <AppText style={styles.areaText}>{props.areas[i].toUpperCase()}</AppText>
-                    <View style={styles.container}>
-                        <View style={{
-                            height: 25,
-                            width: `${100*props.values[i]/max}%`,
-                            backgroundColor: '#532B1D',
-                            borderRadius: 5,
-                            flex: 1,
-                            alignContent: 'center',
-                            justifyContent: 'center',
-                        }}>
-                            <AppText style={styles.valueText}>R$ {getFormattedValue(props.values[i])}</AppText>
+        if (props.type == "N-CUT") {
+            for (let i = 0; i < props.areas.length; i++) {
+
+                    results.push(
+                        <View key={i} style={styles.container}>
+                            <AppText style={styles.areaText}>{props.areas[i].toUpperCase()}</AppText>
+                            <View style={styles.container}>
+                                <View style={{
+                                    height: 25,
+                                    width: `${100*props.values[i]/max}%`,
+                                    backgroundColor: '#532B1D',
+                                    borderRadius: 5,
+                                    flex: 1,
+                                    alignContent: 'center',
+                                    justifyContent: 'center',
+                                }}>
+                                    <AppText style={styles.valueText}>R$ {getFormattedValue(props.values[i])}</AppText>
+                                </View>
+                            </View>
                         </View>
-                    </View>
-                </View>
+                    )
+                }
+             } else if (props.type == "YES-NO") {
+                let i = 0;
+                for (const key in props.values) {
+                    results.push(
+                        <View key={key} style={styles.container}>
+                            <AppText style={styles.areaText}>{props.areas[i].toUpperCase()}</AppText>
+                            <View style={styles.container}>
+                                <View style={{
+                                    height: 25,
+                                    width: `${100*props.values[key]/max}%`,
+                                    backgroundColor: '#532B1D',
+                                    borderRadius: 5,
+                                    flex: 1,
+                                    alignContent: 'center',
+                                    justifyContent: 'center',
+                                }}>
+                                    <AppText style={styles.valueText}>{props.values[key]}</AppText>
+                                </View>
+                            </View>
+                        </View>
+                    )
+                    i += 1;
+                }
+            }
+
+
+        if (props.type == "N-CUT") {
+            results.push(
+                <AppText style={styles.totalText}>TOTAL: R$ {getFormattedValue(sum)}</AppText>
+            )
+        } else if (props.type == "YES-NO") {
+            results.push(
+                <AppText style={styles.totalText}>VOTOS: {sum}</AppText>
             )
         }
-
-        results.push(
-            <AppText style={styles.totalText}>TOTAL: R$ {getFormattedValue(sum)}</AppText>
-        )
 
         setItem(results);
     }, []);

@@ -13,6 +13,7 @@ import Button from 'components/ui/Button';
 import strapi from '../../config/strapi';
 import UserContext from '../../context/GlobalContext';
 import NCutResults from '../../components/NCutResults';
+import YesNoResults from 'components/YesNoResults';
 
 type PropostaType = {
   navigation: NavigationProp<any, any>;
@@ -67,12 +68,37 @@ async function checkYesNo(propostaId: number, userId: number) {
     });
 }
 
+async function checkKnapsack(propostaId: number, userId: number) {
+  return strapi
+    .find('knapsacks', {
+      filters: {
+        usuario: {
+          id: {
+            $eq: userId,
+          },
+        },
+        proposta: {
+          id: {
+            $eq: propostaId,
+          }
+        }
+      }
+    })
+    .then((data:any) => {
+      return data.data;
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}
+
 export default function Proposta({navigation}: PropostaType) {
   const {userId, logarUsuario} = useContext(UserContext);
 
   const route: any = useRoute();
 
   let id = route.params.id;
+  let cost = route.params.cost;
 
   function onClick() {
     // verificar aqui o tipo e redirecionar para a página de votação correspondente
@@ -106,10 +132,26 @@ export default function Proposta({navigation}: PropostaType) {
       });
     } else if (route.params.tipo == 'Knapsack') {
       // navegar para a página de votação do Knapsack
-      console.log('Knapsack');
-      navigation.navigate('Votação Mochileiro', {
-        id: id,
-      });
+      checkKnapsack(id, userId)
+        .then(data => {
+          if (data.length > 0) {
+            Alert.alert(
+              'Usuário já votou!',
+              'Você já votou nesta proposta. Cada usuário só tem direito a um voto!',
+            );
+          } else {
+            navigation.navigate('Votação Mochileiro', {
+              id: id,
+              cost: cost,
+            });
+          }
+        })
+        .catch(error => {
+          Alert.alert(
+            'Algum erro aconteceu!',
+            'Não conseguimos verificar se você já votou ou não nesta proposta. Por favor, tente novamente. Se o erro persistir, entre em contato com os responsáveis pelo app!',
+          );
+        });
     } else if (route.params.tipo == 'YES-NO') {
       // navegar para a página de votação do YES-NO
       //console.log('YES-NO');
@@ -147,7 +189,8 @@ export default function Proposta({navigation}: PropostaType) {
         />
         <View style={styles.results}>
           <AppText style={styles.resultsText}>RESULTADOS</AppText>
-          <NCutResults propostaId={id}/>
+          {route.params.tipo == "N-CUT" && <NCutResults propostaId={id}/>}
+          {route.params.tipo == "YES-NO" && <YesNoResults propostaId={id}/>}
         </View>
 
         <Markdown style={style}>{route.params.texto}</Markdown>
