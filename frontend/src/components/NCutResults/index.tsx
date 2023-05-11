@@ -20,8 +20,13 @@ async function getVotes(propostaId:number) {
           },
         },
       },
+      pagination: {
+        start: 0,
+        limit: 10000,
+      },
       fields: ['voto'],
-      populate: ['proposta']
+      populate: ['proposta'],
+
     })
     .then((data: any) => {
       return data.data;

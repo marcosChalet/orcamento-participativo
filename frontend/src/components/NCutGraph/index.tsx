@@ -85,6 +85,17 @@ export default function NCutGraph(props:NCutGraphType) {
                 }
             }
 
+        results.push(
+            <View
+                style={{
+                borderBottomColor: '#CAC8C7',
+                borderBottomWidth: StyleSheet.hairlineWidth,
+                marginBottom: 10,
+                marginTop: 10,
+                }}
+            />
+        )
+
 
         if (props.type == "N-CUT") {
             results.push(
