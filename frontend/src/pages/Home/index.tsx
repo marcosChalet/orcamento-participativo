@@ -6,9 +6,15 @@ import {NavigationProp} from '@react-navigation/native';
 
 import AppText from 'components/ui/AppText';
 import Proposta from '../../components/Proposta';
-
 import strapi from '../../config/strapi';
 import BottomNavbar from 'components/BottomNavbar';
+import PropostaInterface from 'src/core/proposta.interface';
+
+type WelcomeType = {
+  navigation: NavigationProp<any, any>;
+};
+
+type OmitNavProposta = Omit<PropostaInterface, 'nav'>;
 
 async function getPropostas() {
   return strapi
@@ -28,12 +34,44 @@ async function getPropostas() {
     });
 }
 
-type WelcomeType = {
-  navigation: NavigationProp<any, any>;
-};
+function loadProposta(setPropostas: (p: OmitNavProposta[]) => void) {
+  let p: Array<OmitNavProposta> = [];
+  getPropostas()
+    .then(data => {
+      for (let i = 0; i < data.length; i++) {
+        let proposta = data[i].attributes;
+        let tags: Array<string> = [];
+        let capa =
+          `http://${REACT_APP_HOST}:${REACT_APP_PORT}` +
+          proposta.capa.data.attributes.url;
+        let autor = proposta.usuario.data.attributes.nome;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        for (const [key, value] of Object.entries(proposta.tags)) {
+          tags.push(String(value));
+        }
+        p.push({
+          key: data[i].id,
+          id: data[i].id,
+          title: proposta.titulo,
+          description: proposta.descricao,
+          tags: tags,
+          cost: proposta.valor,
+          author: autor,
+          finalDate: new Date(proposta.data_final),
+          imageUrl: capa,
+          textBody: proposta.texto,
+          type: proposta.Tipo,
+        });
+      }
+      setPropostas(p);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}
 
 export default function Welcome({navigation}: WelcomeType) {
-  const [propostas, setPropostas] = useState<any[]>([]);
+  const [propostas, setPropostas] = useState<OmitNavProposta[]>([]);
 
   useEffect(() => {
     navigation.addListener('beforeRemove', e => {
@@ -55,46 +93,7 @@ export default function Welcome({navigation}: WelcomeType) {
   }, [navigation]);
 
   useEffect(() => {
-    let p: Array<any> = [];
-    getPropostas()
-      .then(data => {
-        for (let i = 0; i < data.length; i++) {
-          let proposta = data[i].attributes;
-          let t = proposta.tags;
-          let tags: Array<string> = [];
-          let capa =
-            `http://${REACT_APP_HOST}:${REACT_APP_PORT}` +
-            proposta.capa.data.attributes.url;
-          let autor = proposta.usuario.data.attributes.nome;
-          let id = data[i].id;
-          let texto = proposta.texto;
-          let tipo = proposta.Tipo;
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          for (const [key, value] of Object.entries(t)) {
-            tags.push(String(value));
-          }
-          p.push(
-            <Proposta
-              key={id}
-              title={proposta.titulo}
-              description={proposta.descricao}
-              tags={tags}
-              cost={proposta.valor}
-              author={autor}
-              finalDate={new Date(proposta.data_final)}
-              imageUrl={capa}
-              id={id}
-              nav={navigation}
-              texto={texto}
-              tipo={tipo}
-            />,
-          );
-        }
-        setPropostas(p);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    loadProposta(setPropostas);
   }, []);
 
   return (
@@ -107,7 +106,22 @@ export default function Welcome({navigation}: WelcomeType) {
             Esta é a área em que você poderá ver as propostas e votações que
             estão abertas.
           </AppText>
-          {propostas}
+          {propostas.map(proposta => (
+            <Proposta
+              key={proposta.id}
+              title={proposta.title}
+              description={proposta.description}
+              tags={proposta.tags}
+              cost={proposta.cost}
+              author={proposta.author}
+              finalDate={new Date(proposta.finalDate)}
+              imageUrl={proposta.imageUrl}
+              id={proposta.id}
+              textBody={proposta.textBody}
+              type={proposta.type}
+              nav={navigation}
+            />
+          ))}
         </View>
       </ScrollView>
       <BottomNavbar />

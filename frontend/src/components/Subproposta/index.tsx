@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {NavigationProp} from '@react-navigation/native';
 import {
   ImageBackground,
   TouchableOpacity,
@@ -11,48 +10,32 @@ import AppText from '../ui/AppText';
 import Heart from '../../../assets/imgs/heart.svg';
 import Button from '../../components/ui/Button';
 import HorizontalRule from 'components/ui/HorizontalRule';
+import SubpropostaInterface from 'src/core/subproposta.interface';
 
-type SubpropostaType = {
-  title: string;
-  description: string;
-  cost: number;
-  author: string;
-  imageUrl: string;
-  id: number;
-  changeState: (id: number) => void;
-  nav: NavigationProp<any, any>;
-};
-
-export default function Subproposta(props: SubpropostaType) {
+export default function Subproposta(props: SubpropostaInterface) {
   const [selected, setSelected] = useState<boolean>(false);
 
   let finalCost: string;
-  finalCost = String(props.cost.toFixed(2)).replace('.', ',');
+  finalCost = String(props.cost?.toFixed(2)).replace('.', ',');
   finalCost = finalCost.replace(/\d{1,3}(?=(\d{3})+(?!\d))/g, '$&.');
 
   function onClick() {
-    if (!selected) {
-      setSelected(true);
-    } else {
-      setSelected(false);
-    }
-    props.changeState(props.id);
+    setSelected(prevSelected => !prevSelected);
+    props.changeState(props.id ?? 0);
   }
 
   function buttonStyle(value: boolean) {
     if (value) {
       return styles.buttonRemoveStyle;
-    } else {
-      return styles.buttonAddStyle;
     }
+    return styles.buttonAddStyle;
   }
 
   function buttonText(value: boolean) {
     if (!value) {
       return 'Adicionar Projeto';
-    } else {
-      return 'Remover Projeto';
     }
+    return 'Remover Projeto';
   }
 
   return (

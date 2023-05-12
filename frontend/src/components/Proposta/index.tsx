@@ -1,36 +1,27 @@
 import React from 'react';
-import {NavigationProp} from '@react-navigation/native';
 import {
   StyleSheet,
   ImageBackground,
-  TouchableOpacity,
   View,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
 import AppText from '../ui/AppText';
 import Tag from '../Tag';
 import Heart from '../../../assets/imgs/heart.svg';
 import HorizontalRule from 'components/ui/HorizontalRule';
+import PropostaInterface from 'src/core/proposta.interface';
 
-type propostaType = {
-  title: string;
-  description: string;
-  tags: Array<string>;
-  cost: number;
-  author: string;
-  finalDate: Date;
-  imageUrl: string;
-  id: number;
-  texto: string;
-  nav: NavigationProp<any, any>;
-  tipo: string;
+type TagsType = {
+  key: string;
+  name: string;
 };
 
-export default function Proposta(props: propostaType) {
-  let tags = [];
+export default function Proposta(props: PropostaInterface) {
+  let tags: Array<TagsType> = [];
 
   for (let i = 0; i < props.tags.length; i++) {
-    tags.push(<Tag key={props.title + i} name={props.tags[i]} />);
+    tags.push({key: props.title + i, name: props.tags[i]});
   }
 
   let now = new Date();
@@ -63,13 +54,13 @@ export default function Proposta(props: propostaType) {
       cost: props.cost,
       author: props.author,
       imageUrl: props.imageUrl,
-      texto: props.texto,
-      tipo: props.tipo,
+      texto: props.textBody,
+      tipo: props.type,
     });
   }
 
   return (
-    <TouchableOpacity onPress={onClick}>
+    <TouchableWithoutFeedback onPress={onClick}>
       <View style={styles.card}>
         <ImageBackground
           style={styles.imageContainer}
@@ -82,12 +73,14 @@ export default function Proposta(props: propostaType) {
           <AppText style={styles.title}>{props.title}</AppText>
           <AppText style={styles.description}>{props.description}</AppText>
 
-          <View style={styles.rowContainer}>{tags}</View>
+          <View style={styles.rowContainer}>
+            {tags.map(item => (
+              <Tag key={item.key} name={item.name} />
+            ))}
+          </View>
 
           <AppText style={styles.cost}>R$ {finalCost}</AppText>
-
           <HorizontalRule />
-
           <View style={styles.bottomContainer}>
             <View style={styles.authorContainer}>
               <View>
@@ -113,7 +106,7 @@ export default function Proposta(props: propostaType) {
           </View>
         </View>
       </View>
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   );
 }
 
