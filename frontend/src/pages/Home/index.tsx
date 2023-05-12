@@ -9,7 +9,6 @@ import Proposta from '../../components/Proposta';
 
 import HomeIcon from 'assets/imgs/home-icon.svg';
 import HeartIcon from 'assets/imgs/heart-icon.svg';
-import ChatIcon from 'assets/imgs/chat-icon.svg';
 import PeopleIcon from 'assets/imgs/people-icon.svg';
 
 import strapi from '../../config/strapi';
@@ -123,10 +122,6 @@ export default function Welcome({navigation}: WelcomeType) {
           <Text style={styles.iconText}>Favoritos</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.barContent}>
-          <ChatIcon width={30} height={26} />
-          <Text style={styles.iconText}>Propor um projeto</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.barContent}>
           <PeopleIcon width={30} height={26} />
           <Text style={styles.iconText}>Propostas da comunidade</Text>
         </TouchableOpacity>
@@ -180,8 +175,8 @@ const {styles} = StyleSheet.create({
     width: '100%',
     height: 65,
     backgroundColor: '#FFF',
-    borderTopWidth: 1,
-    borderColor: '#999999',
+    borderTopWidth: 0.7,
+    borderColor: '#CAC8C7',
     justifyContent: 'space-evenly',
     alignItems: 'center',
     flexDirection: 'row',
