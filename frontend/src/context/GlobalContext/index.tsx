@@ -17,7 +17,7 @@ export const UserProvider: FC<Props> = ({children}) => {
   const [userId, setUsuario] = useState(0);
 
   const logarUsuario = (id: number | undefined) => {
-    if (id != undefined) {
+    if (id !== undefined) {
       setUsuario(id);
     } else {
       setUsuario(0);

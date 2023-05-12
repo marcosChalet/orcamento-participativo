@@ -14,8 +14,6 @@ import PeopleIcon from 'assets/imgs/people-icon.svg';
 
 import strapi from '../../config/strapi';
 
-const hostname = REACT_APP_HOST;
-
 async function getPropostas() {
   return strapi
     .find('propostas', {
@@ -69,7 +67,7 @@ export default function Welcome({navigation}: WelcomeType) {
           let t = proposta.tags;
           let tags: Array<string> = [];
           let capa =
-            `http://${hostname}:${REACT_APP_PORT}` +
+            `http://${REACT_APP_HOST}:${REACT_APP_PORT}` +
             proposta.capa.data.attributes.url;
           let autor = proposta.usuario.data.attributes.nome;
           let id = data[i].id;

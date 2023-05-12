@@ -1,8 +1,7 @@
 import React, {Dispatch, SetStateAction, useState} from 'react';
-
 import {StyleSheet, TextInput, View} from 'react-native';
-
 import {Slider} from '@miblanchard/react-native-slider';
+
 import AppText from 'components/ui/AppText';
 
 type NCutSliderType = {
@@ -36,6 +35,7 @@ export default function NCutSlider(props: NCutSliderType) {
       </View>
       <Slider
         value={value}
+        // eslint-disable-next-line @typescript-eslint/no-shadow
         onValueChange={value => {
           setValue(value[0]);
           props.setValores(prevState => ({
@@ -50,12 +50,13 @@ export default function NCutSlider(props: NCutSliderType) {
       <View style={styles.valueContainer}>
         <AppText style={styles.sliderValor}>Valor escolhido: R$ </AppText>
         <TextInput
+          // eslint-disable-next-line @typescript-eslint/no-shadow
           onChangeText={value => {
-            if (!Number.isNaN(parseInt(value))) {
-              setValue(parseInt(value));
+            if (!Number.isNaN(parseInt(value, 10))) {
+              setValue(parseInt(value, 10));
               props.setValores(prevState => ({
                 ...prevState,
-                [props.id]: parseInt(value),
+                [props.id]: parseInt(value, 10),
               }));
             } else {
               setValue(0);

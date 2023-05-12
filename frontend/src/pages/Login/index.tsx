@@ -9,13 +9,9 @@ import EyeOn from 'assets/imgs/eye-on.svg';
 import EyeOff from 'assets/imgs/eye-off.svg';
 
 import strapi from '../../config/strapi';
-
-import {REACT_APP_STRAPI_KEY, REACT_APP_HOST, REACT_APP_PORT} from '@env';
 import UserContext from '../../context/GlobalContext';
 
 async function authenticate(user: string) {
-  console.log(user);
-  console.log(REACT_APP_STRAPI_KEY, REACT_APP_HOST, REACT_APP_PORT);
   return strapi
     .find('usuarios', {
       filters: {
@@ -29,7 +25,6 @@ async function authenticate(user: string) {
     })
     .catch(error => {
       console.log(error);
-      //console.log(error.response.data);
     });
 }
 
@@ -44,7 +39,7 @@ export default function Login({navigation}: LoginType) {
   const passwordRef = useRef<TextInput>(null);
   const [hidePassword, setHidePassword] = useState(true);
 
-  const {userId, logarUsuario} = useContext(UserContext);
+  const {logarUsuario} = useContext(UserContext);
 
   function onSubmit() {
     if (login === '' || login === null) {
@@ -63,17 +58,9 @@ export default function Login({navigation}: LoginType) {
     // TODO: fazer autenticação
     authenticate(login)
       .then(data => {
-        if (data.length == 1) {
-          let user = data[0].attributes;
-          //console.log(data[0]);
+        if (data.length === 1) {
           let id = data[0].id;
-          //console.log(id);
           logarUsuario?.(id);
-          let nome = user.nome;
-          let matricula = user.matricula;
-          let email = user.email;
-          console.log('Logando o usuário: ');
-          console.log(nome, matricula, email);
           navigation.navigate('Home');
         }
       })

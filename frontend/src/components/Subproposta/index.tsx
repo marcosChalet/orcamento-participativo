@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import {Image, ImageBackground, TouchableOpacity, View} from 'react-native';
-import {StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {NavigationProp} from '@react-navigation/native';
+import {
+  ImageBackground,
+  TouchableOpacity,
+  StyleSheet,
+  View,
+} from 'react-native';
 
 import AppText from '../ui/AppText';
-import Tag from '../Tag';
-
 import Heart from '../../../assets/imgs/heart.svg';
-
-import {NavigationProp} from '@react-navigation/native';
 import Button from '../../components/ui/Button';
 
 type SubpropostaType = {
@@ -17,12 +18,11 @@ type SubpropostaType = {
   author: string;
   imageUrl: string;
   id: number;
-  changeState: (id:number) => void;
+  changeState: (id: number) => void;
   nav: NavigationProp<any, any>;
 };
 
 export default function Subproposta(props: SubpropostaType) {
-
   const [selected, setSelected] = useState<boolean>(false);
 
   let finalCost: string;
@@ -31,26 +31,26 @@ export default function Subproposta(props: SubpropostaType) {
 
   function onClick() {
     if (!selected) {
-        setSelected(true);
+      setSelected(true);
     } else {
-        setSelected(false);
+      setSelected(false);
     }
     props.changeState(props.id);
   }
 
-  function buttonStyle(value:boolean) {
+  function buttonStyle(value: boolean) {
     if (value) {
-        return styles.buttonRemoveStyle;
+      return styles.buttonRemoveStyle;
     } else {
-        return styles.buttonAddStyle;
+      return styles.buttonAddStyle;
     }
   }
 
-  function buttonText(value:boolean) {
+  function buttonText(value: boolean) {
     if (!value) {
-        return "Adicionar Projeto";
+      return 'Adicionar Projeto';
     } else {
-        return "Remover Projeto";
+      return 'Remover Projeto';
     }
   }
 
@@ -69,13 +69,7 @@ export default function Subproposta(props: SubpropostaType) {
           <AppText style={styles.description}>{props.description}</AppText>
           <AppText style={styles.cost}>R$ {finalCost}</AppText>
 
-          <View
-            style={{
-              borderBottomColor: '#CAC8C7',
-              borderBottomWidth: StyleSheet.hairlineWidth,
-              marginBottom: 10,
-            }}
-          />
+          <View style={styles.dividingLine} />
 
           <View style={styles.bottomContainer}>
             <View style={styles.authorContainer}>
@@ -91,21 +85,12 @@ export default function Subproposta(props: SubpropostaType) {
             </View>
 
             <View style={styles.heartContainer}>
-              <Heart
-                style={{
-                  width: 30,
-                  height: 30,
-                }}
-              />
+              <Heart style={styles.heartSize} />
             </View>
           </View>
-          <View
-            style={{
-              borderBottomColor: '#CAC8C7',
-              borderBottomWidth: StyleSheet.hairlineWidth,
-              marginBottom: 10,
-            }}
-          />
+
+          <View style={styles.dividingLine} />
+
           <Button style={buttonStyle(selected)} clickFn={onClick}>
             <AppText style={styles.buttonText}>{buttonText(selected)}</AppText>
           </Button>
@@ -215,5 +200,14 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     width: '100%',
     backgroundColor: 'rgb(240, 141, 96)',
+  },
+  heartSize: {
+    width: 30,
+    height: 30,
+  },
+  dividingLine: {
+    borderBottomColor: '#CAC8C7',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    marginBottom: 10,
   },
 });

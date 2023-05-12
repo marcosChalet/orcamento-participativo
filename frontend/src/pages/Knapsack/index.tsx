@@ -1,23 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
-
-import Button from 'components/ui/Button';
-import strapi from '../../config/strapi';
-import UserContext from '../../context/GlobalContext';
-
-import AppText from 'components/ui/AppText';
+import {ScrollView, View, Alert, StyleSheet} from 'react-native';
 import {NavigationProp, useRoute} from '@react-navigation/native';
 import Subproposta from 'components/Subproposta';
-
 import {REACT_APP_HOST, REACT_APP_PORT} from '@env';
-import {
-  ScrollView,
-  TouchableOpacity,
-  View,
-  Text,
-  Alert,
-  StyleSheet,
-} from 'react-native';
-const hostname = REACT_APP_HOST;
+
+import UserContext from '../../context/GlobalContext';
+import AppText from 'components/ui/AppText';
+import Button from 'components/ui/Button';
+import strapi from '../../config/strapi';
 
 async function submitVote(userId: number, proposta: number, voto: number[]) {
   return strapi
@@ -59,8 +49,7 @@ async function getSubpropostas(proposta: number) {
     .then((data: any) => {
       return data.data;
     })
-    .catch(error => {
-      console.log('Teste 2', error);
+    .catch(() => {
       return -1;
     });
 }
@@ -96,21 +85,20 @@ function internBarStyle(maxValue: number, alocado: number) {
 export default function Knapsack({navigation}: KnapsackType) {
   const [cand, setCand] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [soma, setSoma] = useState<number>(0);
 
   const [selectedProjects, setSelectedProjects] = useState<{
     [key: number]: boolean;
   }>({});
+
   const [projectValues, setProjectValues] = useState<{[key: number]: number}>(
     {},
   );
-  const [soma, setSoma] = useState<number>(0);
 
-  const {userId, logarUsuario} = useContext(UserContext);
-
+  const {userId} = useContext(UserContext);
   const route: any = useRoute();
-
-  let id = parseInt(route.params.id);
-  let cost = parseInt(route.params.cost);
+  let id = parseInt(route.params.id, 10);
+  let cost = parseInt(route.params.cost, 10);
 
   function onSubmit() {
     if (soma <= cost) {
@@ -128,7 +116,7 @@ export default function Knapsack({navigation}: KnapsackType) {
             submitVote(userId, id, votos)
               .then(data => {
                 console.log(data);
-                if (data != undefined) {
+                if (data !== undefined) {
                   Alert.alert(
                     'Seu voto foi registrado!',
                     'Obrigado por participar desta votação.',
@@ -186,28 +174,25 @@ export default function Knapsack({navigation}: KnapsackType) {
         let selecionados: {[key: number]: boolean} = {};
 
         let subpropostas = data[0].attributes.subpropostas.data;
-        //console.log(subpropostas)
         for (let i = 0; i < subpropostas.length; i++) {
-          //console.log(subpropostas[i]);
-          let subId: number = parseInt(subpropostas[i].id);
+          let subId: number = parseInt(subpropostas[i].id, 10);
           let title: string = subpropostas[i].attributes.titulo;
           let description: string = subpropostas[i].attributes.descricao;
-          let cost: number = subpropostas[i].attributes.valor;
+          let price: number = subpropostas[i].attributes.valor;
           let urlSuffix: string =
             subpropostas[i].attributes.capa.data.attributes.url;
-          let url: string = `http://${hostname}:${REACT_APP_PORT}${urlSuffix}`;
+          let url: string = `http://${REACT_APP_HOST}:${REACT_APP_PORT}${urlSuffix}`;
           let autor: string =
             subpropostas[i].attributes.usuario.data.attributes.nome;
 
-          valores[subId] = cost;
+          valores[subId] = price;
           selecionados[subId] = false;
-          //let url:string = `http://${hostname}:${REACT_APP_PORT}` + subpropostas[i].attributes.capa.data.attributes.url;
           candidatos.push(
             <Subproposta
               id={subId}
               title={title}
               description={description}
-              cost={cost}
+              cost={price}
               imageUrl={url}
               author={autor}
               changeState={changeState}
@@ -242,7 +227,7 @@ export default function Knapsack({navigation}: KnapsackType) {
       </ScrollView>
 
       <View style={styles.navbar}>
-        <AppText style={{fontWeight: 'bold', fontSize: 18}}>
+        <AppText style={styles.totalValueText}>
           Valor Alocado: R$ {getFormattedValue(soma)}
         </AppText>
         <View style={styles.bar}>
@@ -307,5 +292,9 @@ const styles = StyleSheet.create({
   buttonStyle: {
     marginTop: 20,
     marginBottom: 8,
+  },
+  totalValueText: {
+    fontWeight: 'bold',
+    fontSize: 18,
   },
 });

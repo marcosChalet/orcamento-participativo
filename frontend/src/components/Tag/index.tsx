@@ -1,6 +1,7 @@
 import React from 'react';
-import AppText from '../ui/AppText';
 import {StyleSheet, TouchableOpacity} from 'react-native';
+
+import AppText from '../ui/AppText';
 
 type tagProps = {
   name: string;

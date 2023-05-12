@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {StyleSheet, View} from 'react-native';
 import AppText from 'components/ui/AppText';
@@ -7,11 +7,11 @@ import NCutGraph from 'components/NCutGraph';
 import strapi from '../../config/strapi';
 
 type YesNoResultsType = {
-    propostaId:number;
+  propostaId: number;
 };
 
-async function getVotes(propostaId:number) {
-    return strapi
+async function getVotes(propostaId: number) {
+  return strapi
     .find('yes-nos', {
       filters: {
         proposta: {
@@ -25,7 +25,7 @@ async function getVotes(propostaId:number) {
         limit: 10000,
       },
       fields: ['voto'],
-      populate: ['proposta']
+      populate: ['proposta'],
     })
     .then((data: any) => {
       return data.data;
@@ -35,73 +35,60 @@ async function getVotes(propostaId:number) {
     });
 }
 
-export default function YesNoResults(props:YesNoResultsType) {
+export default function YesNoResults(props: YesNoResultsType) {
+  const [areas, setAreas] = useState<string[]>(['sim', 'não']);
+  const [values, setValues] = useState<{[key: string]: number}>({});
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const [areas, setAreas] = useState<string[]>(["sim", "não"]);
-    const [values, setValues] = useState<{[key:string]:number}>({});
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+  useEffect(() => {
+    setIsLoading(true);
+    getVotes(props.propostaId)
+      .then(data => {
+        let numVotos = data.length;
+        let results: {[key: string]: number} = {
+          sim: 0,
+          não: 0,
+        };
 
-    useEffect(() => {
-        setIsLoading(true);
-        getVotes(props.propostaId)
-        .then((data) => {
+        for (let i = 0; i < numVotos; i++) {
+          let voto = data[i].attributes.voto;
+          results[voto] += 1;
+        }
 
-            //console.log(data);
+        setValues(results);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, []);
 
-            let numVotos = data.length;
-            console.log("numVotos", numVotos)
-            let results:{[key:string]:number} = {
-                "sim": 0,
-                "não": 0,
-            };
-
-            for (let i = 0; i < numVotos; i++) {
-                let voto = data[i].attributes.voto;
-                results[voto] += 1;
-            }
-
-            setValues(results);
-            setIsLoading(false);
-        })
-        .catch(error => {
-            console.log(error);
-        });
-
-    }, []);
-
-    return (
-        <View style={styles.container}>
-            {isLoading && <AppText style={styles.loading}>Carregando...</AppText>}
-            {!isLoading &&
-                <NCutGraph
-                    areas={areas}
-                    values={values}
-                    type="YES-NO"
-                />
-            }
-        </View>
-    )
-
+  return (
+    <View style={styles.container}>
+      {isLoading && <AppText style={styles.loading}>Carregando...</AppText>}
+      {!isLoading && <NCutGraph areas={areas} values={values} type="YES-NO" />}
+    </View>
+  );
 }
 
-const styles = {
-    container: {
-        flex: 1,
-        width: '100%',
-    },
-    results: {
-        padding: 10,
-        marginTop: 10,
-        borderRadius: 10,
-        borderColor: '#532B1D',
-        borderWidth: 1,
-    },
-    resultsText: {
-        fontWeight: 'bold',
-        fontSize: 15,
-    },
-    loading: {
-        fontSize: 12,
-        textAlign: 'center',
-    }
-}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: '100%',
+  },
+  results: {
+    padding: 10,
+    marginTop: 10,
+    borderRadius: 10,
+    borderColor: '#532B1D',
+    borderWidth: 1,
+  },
+  resultsText: {
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+  loading: {
+    fontSize: 12,
+    textAlign: 'center',
+  },
+});

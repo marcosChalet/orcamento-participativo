@@ -94,7 +94,7 @@ async function checkKnapsack(propostaId: number, userId: number) {
 }
 
 export default function Proposta({navigation}: PropostaType) {
-  const {userId, logarUsuario} = useContext(UserContext);
+  const {userId} = useContext(UserContext);
 
   const route: any = useRoute();
 
@@ -103,9 +103,8 @@ export default function Proposta({navigation}: PropostaType) {
 
   function onClick() {
     // verificar aqui o tipo e redirecionar para a página de votação correspondente
-    if (route.params.tipo == 'N-CUT') {
+    if (route.params.tipo === 'N-CUT') {
       // navegar para a página de votação do N-CUT
-      //console.log("N-CUT")
       checkNCUT(id, userId)
         .then(data => {
           if (data.length > 0) {
@@ -119,19 +118,18 @@ export default function Proposta({navigation}: PropostaType) {
             });
           }
         })
-        .catch(error => {
+        .catch(() => {
           Alert.alert(
             'Algum erro aconteceu!',
             'Não conseguimos verificar se você já votou ou não nesta proposta. Por favor, tente novamente. Se o erro persistir, entre em contato com os responsáveis pelo app!',
           );
         });
-    } else if (route.params.tipo == 'Approval-1') {
+    } else if (route.params.tipo === 'Approval-1') {
       // navegar para a página de votação do Approval-1
-      console.log('Approval-1');
       navigation.navigate('Votação Aprova-Um', {
         id: id,
       });
-    } else if (route.params.tipo == 'Knapsack') {
+    } else if (route.params.tipo === 'Knapsack') {
       // navegar para a página de votação do Knapsack
       checkKnapsack(id, userId)
         .then(data => {
@@ -147,15 +145,14 @@ export default function Proposta({navigation}: PropostaType) {
             });
           }
         })
-        .catch(error => {
+        .catch(() => {
           Alert.alert(
             'Algum erro aconteceu!',
             'Não conseguimos verificar se você já votou ou não nesta proposta. Por favor, tente novamente. Se o erro persistir, entre em contato com os responsáveis pelo app!',
           );
         });
-    } else if (route.params.tipo == 'YES-NO') {
+    } else if (route.params.tipo === 'YES-NO') {
       // navegar para a página de votação do YES-NO
-      //console.log('YES-NO');
       checkYesNo(id, userId)
         .then(data => {
           if (data.length > 0) {
@@ -169,7 +166,7 @@ export default function Proposta({navigation}: PropostaType) {
             });
           }
         })
-        .catch(error => {
+        .catch(() => {
           Alert.alert(
             'Algum erro aconteceu!',
             'Não conseguimos verificar se você já votou ou não nesta proposta. Por favor, tente novamente. Se o erro persistir, entre em contato com os responsáveis pelo app!',
@@ -190,17 +187,10 @@ export default function Proposta({navigation}: PropostaType) {
         />
         <View style={styles.results}>
           <AppText style={styles.resultsText}>RESULTADOS</AppText>
-          <View
-            style={{
-              borderBottomColor: '#CAC8C7',
-              borderBottomWidth: StyleSheet.hairlineWidth,
-              marginBottom: 10,
-              marginTop: 10,
-            }}
-          />
-          {route.params.tipo == 'N-CUT' && <NCutResults propostaId={id} />}
-          {route.params.tipo == 'YES-NO' && <YesNoResults propostaId={id} />}
-          {route.params.tipo == 'Knapsack' && (
+          <View style={styles.resultsView} />
+          {route.params.tipo === 'N-CUT' && <NCutResults propostaId={id} />}
+          {route.params.tipo === 'YES-NO' && <YesNoResults propostaId={id} />}
+          {route.params.tipo === 'Knapsack' && (
             <KnapsackResults propostaId={id} />
           )}
         </View>
@@ -272,6 +262,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 14,
     textAlign: 'center',
+  },
+  resultsView: {
+    borderBottomColor: '#CAC8C7',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    marginBottom: 10,
+    marginTop: 10,
   },
 });
 

@@ -1,18 +1,13 @@
 import React, {useState, useEffect, useContext} from 'react';
-
-import {REACT_APP_HOST, REACT_APP_PORT} from '@env';
-
 import {Alert, ScrollView, StyleSheet, View} from 'react-native';
-import {Slider} from '@miblanchard/react-native-slider';
-import AppText from 'components/ui/AppText';
-import NCutSlider from 'components/NCutSlider';
-
 import {NavigationProp} from '@react-navigation/native';
-
 import {useRoute} from '@react-navigation/native';
-import strapi from '../../config/strapi';
-import Button from 'components/ui/Button';
+
 import UserContext from '../../context/GlobalContext';
+import strapi from '../../config/strapi';
+import NCutSlider from 'components/NCutSlider';
+import AppText from 'components/ui/AppText';
+import Button from 'components/ui/Button';
 
 type NCutType = {
   navigation: NavigationProp<any, any>;
@@ -77,11 +72,11 @@ export default function NCut({navigation}: NCutType) {
   const [valorAlocado, setValorAlocado] = useState(0);
   const [valorMaximo, setValorMaximo] = useState(0);
   const [areas, setAreas] = useState<String[]>([]);
-  const {userId, logarUsuario} = useContext(UserContext);
+  const {userId} = useContext(UserContext);
 
   const route: any = useRoute();
 
-  let id = parseInt(route.params.id);
+  let id = parseInt(route.params.id, 10);
 
   function onSubmit() {
     if (valorAlocado > valorMaximo) {
@@ -98,8 +93,7 @@ export default function NCut({navigation}: NCutType) {
           onPress: () => {
             submitVote(userId, id, valores)
               .then(data => {
-                //console.log(data);
-                if (data != undefined) {
+                if (data !== undefined) {
                   if (Object.keys(data).length > 0) {
                     Alert.alert(
                       'Seu voto foi registrado!',
@@ -114,7 +108,7 @@ export default function NCut({navigation}: NCutType) {
                   );
                 }
               })
-              .catch(error => {
+              .catch(() => {
                 Alert.alert(
                   'Algo deu errado!',
                   'Infelizmente, não conseguimos registrar o seu voto no nosso banco de dados. Por favor, tente novamente! Se mesmo assim você não conseguir, entre em contato com os responsáveis pelo app.',
@@ -155,9 +149,8 @@ export default function NCut({navigation}: NCutType) {
   useEffect(() => {
     getAreas(id)
       .then(data => {
-        let sliders: Array<any> = [];
-        //console.log(data);
-        let areas = data.attributes.areas;
+        let slidersLoad: Array<any> = [];
+        let areasAtt: {[key: string]: string} = data.attributes.areas;
         let valor = data.attributes.valor;
 
         setValorAlocado(valor);
@@ -166,15 +159,15 @@ export default function NCut({navigation}: NCutType) {
         let valoresIniciais: {[key: number]: number} = {};
         let areasStrings = [];
 
-        let size = Object.keys(areas).length;
-        for (const k in areas) {
-          valoresIniciais[parseInt(k)] = Math.floor(valor / size);
-          areasStrings.push(areas[k]);
-          sliders.push(
+        let size = Object.keys(areasAtt).length;
+        for (const k in areasAtt) {
+          valoresIniciais[parseInt(k, 10)] = Math.floor(valor / size);
+          areasStrings.push(areasAtt[k]);
+          slidersLoad.push(
             <NCutSlider
-              id={parseInt(k)}
+              id={parseInt(k, 10)}
               key={k}
-              area={areas[k]}
+              area={areasAtt[k]}
               valorInicial={Math.floor(valor / size)}
               valorMaximo={valor}
               setValores={setValores}
@@ -182,7 +175,7 @@ export default function NCut({navigation}: NCutType) {
             />,
           );
         }
-        setSliders(sliders);
+        setSliders(slidersLoad);
         setValores(valoresIniciais);
         setAreas(areasStrings);
       })

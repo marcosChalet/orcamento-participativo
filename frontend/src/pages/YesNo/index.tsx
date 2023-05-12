@@ -1,14 +1,12 @@
 import React, {useContext, useState} from 'react';
+import {Alert, StyleSheet, View} from 'react-native';
+import SwitchWithIcons from 'react-native-switch-with-icons';
+import {NavigationProp, useRoute} from '@react-navigation/native';
 
 import AppText from 'components/ui/AppText';
-import {Alert, Image, ScrollView, StyleSheet, View} from 'react-native';
-import SwitchWithIcons from 'react-native-switch-with-icons';
-import ThumbsUp from 'assets/imgs/thumbsUp.svg';
-import ThumbsDown from 'assets/imgs/thumbsDown.svg';
 import Button from 'components/ui/Button';
 import strapi from '../../config/strapi';
 import UserContext from '../../context/GlobalContext';
-import {NavigationProp, useRoute} from '@react-navigation/native';
 
 function yesStyle(value: boolean) {
   if (value) {
@@ -63,11 +61,11 @@ type YesNoType = {
 
 export default function YesNo({navigation}: YesNoType) {
   const [voto, setVoto] = useState<boolean>(true);
-  const {userId, logarUsuario} = useContext(UserContext);
+  const {userId} = useContext(UserContext);
 
   const route: any = useRoute();
 
-  let id = parseInt(route.params.id);
+  let id = parseInt(route.params.id, 10);
 
   function onSubmit() {
     let valorVoto = '';
@@ -83,7 +81,7 @@ export default function YesNo({navigation}: YesNoType) {
         onPress: () => {
           submitVote(userId, id, valorVoto)
             .then(data => {
-              if (data != undefined) {
+              if (data !== undefined) {
                 if (Object.keys(data).length > 0) {
                   Alert.alert(
                     'Seu voto foi registrado!',
@@ -98,7 +96,7 @@ export default function YesNo({navigation}: YesNoType) {
                 );
               }
             })
-            .catch(error => {
+            .catch(() => {
               Alert.alert(
                 'Algo deu errado!',
                 'Infelizmente, não conseguimos registrar o seu voto no nosso banco de dados. Por favor, tente novamente! Se mesmo assim você não conseguir, entre em contato com os responsáveis pelo app.',
@@ -117,7 +115,6 @@ export default function YesNo({navigation}: YesNoType) {
         <SwitchWithIcons
           value={voto}
           onValueChange={value => {
-            console.log(value);
             setVoto(value);
           }}
           style={styles.switch}
