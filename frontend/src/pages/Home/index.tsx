@@ -1,17 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import {REACT_APP_HOST, REACT_APP_PORT} from '@env';
-import {ScrollView, TouchableOpacity, View, Text, Alert} from 'react-native';
+import {ScrollView, View, Alert} from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import {NavigationProp} from '@react-navigation/native';
 
 import AppText from 'components/ui/AppText';
 import Proposta from '../../components/Proposta';
 
-import HomeIcon from 'assets/imgs/home-icon.svg';
-import HeartIcon from 'assets/imgs/heart-icon.svg';
-import PeopleIcon from 'assets/imgs/people-icon.svg';
-
 import strapi from '../../config/strapi';
+import BottomNavbar from 'components/BottomNavbar';
 
 async function getPropostas() {
   return strapi
@@ -72,6 +69,7 @@ export default function Welcome({navigation}: WelcomeType) {
           let id = data[i].id;
           let texto = proposta.texto;
           let tipo = proposta.Tipo;
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           for (const [key, value] of Object.entries(t)) {
             tags.push(String(value));
           }
@@ -112,20 +110,7 @@ export default function Welcome({navigation}: WelcomeType) {
           {propostas}
         </View>
       </ScrollView>
-      <View style={styles.navbar}>
-        <TouchableOpacity style={styles.barContent}>
-          <HomeIcon width={30} height={26} />
-          <Text style={styles.iconText}>Início</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.barContent}>
-          <HeartIcon width={30} height={26} />
-          <Text style={styles.iconText}>Favoritos</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.barContent}>
-          <PeopleIcon width={30} height={26} />
-          <Text style={styles.iconText}>Propostas da comunidade</Text>
-        </TouchableOpacity>
-      </View>
+      <BottomNavbar />
     </View>
   );
 }
@@ -170,27 +155,5 @@ const {styles} = StyleSheet.create({
       paddingBottom: 10,
       fontSize: 18,
     },
-  },
-  navbar: {
-    width: '100%',
-    height: 65,
-    backgroundColor: '#FFF',
-    borderTopWidth: 0.7,
-    borderColor: '#CAC8C7',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingTop: 7,
-  },
-  barContent: {
-    height: '100%',
-    width: 75,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  iconText: {
-    fontSize: 9,
-    color: '#434343',
-    paddingTop: 2,
   },
 });
