@@ -15,6 +15,7 @@ import UserContext from '../../context/GlobalContext';
 import NCutResults from '../../components/NCutResults';
 import YesNoResults from '../../components/YesNoResults';
 import KnapsackResults from '../../components/KnapsackResults';
+import HorizontalRule from 'components/ui/HorizontalRule';
 
 type PropostaType = {
   navigation: NavigationProp<any, any>;
@@ -187,7 +188,7 @@ export default function Proposta({navigation}: PropostaType) {
         />
         <View style={styles.results}>
           <AppText style={styles.resultsText}>RESULTADOS</AppText>
-          <View style={styles.resultsView} />
+          <HorizontalRule style={styles.dividingSpace} />
           {route.params.tipo === 'N-CUT' && <NCutResults propostaId={id} />}
           {route.params.tipo === 'YES-NO' && <YesNoResults propostaId={id} />}
           {route.params.tipo === 'Knapsack' && (
@@ -263,10 +264,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
   },
-  resultsView: {
-    borderBottomColor: '#CAC8C7',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    marginBottom: 10,
+  dividingSpace: {
     marginTop: 10,
   },
 });

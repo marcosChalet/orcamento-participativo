@@ -3,6 +3,7 @@ import {Alert, StyleSheet, View} from 'react-native';
 
 import AppText from 'components/ui/AppText';
 import strapi from '../../config/strapi';
+import HorizontalRule from 'components/ui/HorizontalRule';
 
 type KnapsackResultsType = {
   propostaId: number;
@@ -89,7 +90,9 @@ export default function KnapsackResults(props: KnapsackResultsType) {
               break;
             }
           }
-          resultadoFinal.push(<View style={styles.resultView} />);
+
+          resultadoFinal.push(<HorizontalRule />);
+
           resultadoFinal.push(
             <AppText style={styles.totalText}>
               TOTAL: R$ {getFormattedValue(acumulado)}
@@ -134,11 +137,6 @@ const styles = StyleSheet.create({
   valueText: {
     fontSize: 12,
     textAlign: 'center',
-    marginBottom: 10,
-  },
-  resultView: {
-    borderBottomColor: '#CAC8C7',
-    borderBottomWidth: StyleSheet.hairlineWidth,
     marginBottom: 10,
   },
 });

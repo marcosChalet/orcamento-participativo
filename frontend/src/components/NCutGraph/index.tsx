@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 
 import {StyleSheet, View} from 'react-native';
 import AppText from 'components/ui/AppText';
+import HorizontalRule from 'components/ui/HorizontalRule';
 
 type NCutGraphType = {
   areas: string[];
@@ -82,7 +83,7 @@ export default function NCutGraph(props: NCutGraphType) {
       }
     }
 
-    results.push(<View style={styles.resultsView} />);
+    results.push(<HorizontalRule style={styles.dividingSpace} />);
 
     if (props.type === 'N-CUT') {
       results.push(
@@ -121,10 +122,7 @@ const styles = StyleSheet.create({
     color: 'white',
     marginLeft: 5,
   },
-  resultsView: {
-    borderBottomColor: '#CAC8C7',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    marginBottom: 10,
+  dividingSpace: {
     marginTop: 10,
   },
   bars: {

@@ -10,6 +10,7 @@ import {
 import AppText from '../ui/AppText';
 import Heart from '../../../assets/imgs/heart.svg';
 import Button from '../../components/ui/Button';
+import HorizontalRule from 'components/ui/HorizontalRule';
 
 type SubpropostaType = {
   title: string;
@@ -69,7 +70,7 @@ export default function Subproposta(props: SubpropostaType) {
           <AppText style={styles.description}>{props.description}</AppText>
           <AppText style={styles.cost}>R$ {finalCost}</AppText>
 
-          <View style={styles.dividingLine} />
+          <HorizontalRule />
 
           <View style={styles.bottomContainer}>
             <View style={styles.authorContainer}>
@@ -89,7 +90,7 @@ export default function Subproposta(props: SubpropostaType) {
             </View>
           </View>
 
-          <View style={styles.dividingLine} />
+          <HorizontalRule />
 
           <Button style={buttonStyle(selected)} clickFn={onClick}>
             <AppText style={styles.buttonText}>{buttonText(selected)}</AppText>
@@ -112,12 +113,6 @@ const styles = StyleSheet.create({
   },
   info: {
     padding: 15,
-  },
-  rowContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
   },
   bottomContainer: {
     display: 'flex',
@@ -176,9 +171,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 10,
   },
-  miniText: {
-    fontSize: 8,
-  },
   miniBiggerText: {
     fontSize: 10,
     fontWeight: '700',
@@ -204,10 +196,5 @@ const styles = StyleSheet.create({
   heartSize: {
     width: 30,
     height: 30,
-  },
-  dividingLine: {
-    borderBottomColor: '#CAC8C7',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    marginBottom: 10,
   },
 });

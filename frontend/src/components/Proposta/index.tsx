@@ -1,13 +1,16 @@
 import React from 'react';
-import {ImageBackground, TouchableOpacity, View} from 'react-native';
-import {StyleSheet} from 'react-native';
+import {NavigationProp} from '@react-navigation/native';
+import {
+  StyleSheet,
+  ImageBackground,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import AppText from '../ui/AppText';
 import Tag from '../Tag';
-
 import Heart from '../../../assets/imgs/heart.svg';
-
-import {NavigationProp} from '@react-navigation/native';
+import HorizontalRule from 'components/ui/HorizontalRule';
 
 type propostaType = {
   title: string;
@@ -83,13 +86,7 @@ export default function Proposta(props: propostaType) {
 
           <AppText style={styles.cost}>R$ {finalCost}</AppText>
 
-          <View
-            style={{
-              borderBottomColor: '#CAC8C7',
-              borderBottomWidth: StyleSheet.hairlineWidth,
-              marginBottom: 10,
-            }}
-          />
+          <HorizontalRule />
 
           <View style={styles.bottomContainer}>
             <View style={styles.authorContainer}>
@@ -111,12 +108,7 @@ export default function Proposta(props: propostaType) {
             </View>
 
             <View style={styles.heartContainer}>
-              <Heart
-                style={{
-                  width: 30,
-                  height: 30,
-                }}
-              />
+              <Heart style={styles.heartSize} />
             </View>
           </View>
         </View>
@@ -169,6 +161,10 @@ const styles = StyleSheet.create({
   heartContainer: {
     width: '10%',
     margin: 2,
+  },
+  heartSize: {
+    width: 30,
+    height: 30,
   },
   mainImageStyle: {
     borderTopLeftRadius: 15,
