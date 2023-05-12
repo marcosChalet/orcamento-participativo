@@ -87,17 +87,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
   },
-  results: {
-    padding: 10,
-    marginTop: 10,
-    borderRadius: 10,
-    borderColor: '#532B1D',
-    borderWidth: 1,
-  },
-  resultsText: {
-    fontWeight: 'bold',
-    fontSize: 15,
-  },
   loading: {
     fontSize: 12,
     textAlign: 'center',
