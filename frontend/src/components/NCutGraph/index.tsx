@@ -1,8 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
-
 import {StyleSheet, View} from 'react-native';
+
 import AppText from 'components/ui/AppText';
 import HorizontalRule from 'components/ui/HorizontalRule';
+import ResultBar from 'components/ResultBar';
+import BarType from 'src/core/bar.type';
 
 type NCutGraphType = {
   areas: string[];
@@ -16,89 +19,86 @@ function getFormattedValue(value: number) {
   return finalCost;
 }
 
+function loadBarData(
+  setSum: (T: number) => void,
+  setItem: (T: BarType[]) => void,
+  props: NCutGraphType,
+) {
+  let max = -1;
+  let sum = 0;
+  let results: BarType[] = [];
+  if (props.type === 'N-CUT') {
+    for (let i = 0; i < props.areas.length; i++) {
+      if (props.values[i] > max) {
+        max = props.values[i];
+        sum += props.values[i];
+      }
+    }
+  } else if (props.type === 'YES-NO') {
+    for (const key in props.values) {
+      if (props.values[key] > max) {
+        max = props.values[key];
+        sum += 1;
+      }
+    }
+  }
+
+  setSum(sum);
+
+  if (props.type === 'N-CUT') {
+    for (let i = 0; i < props.areas.length; i++) {
+      let barWidth = {width: `${(100 * props.values[i]) / max}%`};
+      results.push({
+        title: props.areas[i].toUpperCase(),
+        value: +getFormattedValue(props.values[i]),
+        style: barWidth,
+      });
+    }
+  } else if (props.type === 'YES-NO') {
+    let i = 0;
+    for (const key in props.values) {
+      let barWidth = {width: `${(100 * props.values[key]) / max}%`};
+      results.push({
+        title: props.areas[i].toUpperCase(),
+        value: props.values[key],
+        style: barWidth,
+      });
+      i += 1;
+    }
+  }
+
+  setItem(results);
+}
+
 export default function NCutGraph(props: NCutGraphType) {
-  const [items, setItem] = useState<any[]>([]);
+  const [items, setItem] = useState<BarType[]>([]);
+  const [sum, setSum] = useState<number>(0);
 
   useEffect(() => {
-    let max = -1;
-    let sum = 0;
-    let results: any[] = [];
-    if (props.type === 'N-CUT') {
-      for (let i = 0; i < props.areas.length; i++) {
-        if (props.values[i] > max) {
-          max = props.values[i];
-          sum += props.values[i];
-        }
-      }
-    } else if (props.type === 'YES-NO') {
-      for (const key in props.values) {
-        if (props.values[key] > max) {
-          max = props.values[key];
-          sum += 1;
-        }
-      }
-    }
-
-    if (props.type === 'N-CUT') {
-      for (let i = 0; i < props.areas.length; i++) {
-        results.push(
-          <View key={i} style={styles.container}>
-            <AppText style={styles.areaText}>
-              {props.areas[i].toUpperCase()}
-            </AppText>
-            <View style={styles.container}>
-              <View
-                style={[
-                  styles.bars,
-                  {width: `${(100 * props.values[i]) / max}%`},
-                ]}>
-                <AppText style={styles.valueText}>
-                  R$ {getFormattedValue(props.values[i])}
-                </AppText>
-              </View>
-            </View>
-          </View>,
-        );
-      }
-    } else if (props.type === 'YES-NO') {
-      let i = 0;
-      for (const key in props.values) {
-        results.push(
-          <View key={key} style={styles.container}>
-            <AppText style={styles.areaText}>
-              {props.areas[i].toUpperCase()}
-            </AppText>
-            <View style={styles.container}>
-              <View
-                style={[
-                  styles.bars,
-                  {width: `${(100 * props.values[key]) / max}%`},
-                ]}>
-                <AppText style={styles.valueText}>{props.values[key]}</AppText>
-              </View>
-            </View>
-          </View>,
-        );
-        i += 1;
-      }
-    }
-
-    results.push(<HorizontalRule style={styles.dividingSpace} />);
-
-    if (props.type === 'N-CUT') {
-      results.push(
-        <AppText style={styles.totalText}>
-          TOTAL: R$ {getFormattedValue(sum)}
-        </AppText>,
-      );
-    } else if (props.type === 'YES-NO') {
-      results.push(<AppText style={styles.totalText}>VOTOS: {sum}</AppText>);
-    }
-
-    setItem(results);
+    loadBarData(setSum, setItem, props);
   }, []);
 
-  return <View style={styles.container}>{items}</View>;
+  return (
+    <View style={styles.container}>
+      {items.map(item => (
+        <ResultBar
+          key={item.title}
+          title={item.title}
+          value={item.value}
+          style={item.style}
+        />
+      ))}
+      <HorizontalRule style={styles.dividingSpace} />
+      {props.type === 'N-CUT' && (
+        <AppText style={styles.totalText}>
+          TOTAL: R$ {getFormattedValue(sum)}
+        </AppText>
+      )}
+      {props.type === 'YES-NO' && (
+        <AppText style={styles.totalText}>VOTOS: {sum}</AppText>
+      )}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -106,31 +106,13 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
   },
-  areaText: {
-    fontWeight: 'bold',
-    fontSize: 12,
-    marginTop: 10,
-  },
   totalText: {
     fontWeight: 'bold',
     fontSize: 12,
     marginTop: 10,
     textAlign: 'center',
   },
-  valueText: {
-    fontSize: 10,
-    color: 'white',
-    marginLeft: 5,
-  },
   dividingSpace: {
     marginTop: 10,
-  },
-  bars: {
-    height: 25,
-    backgroundColor: '#532B1D',
-    borderRadius: 5,
-    flex: 1,
-    alignContent: 'center',
-    justifyContent: 'center',
   },
 });
