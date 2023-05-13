@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import {Alert, StyleSheet, View} from 'react-native';
 
@@ -7,6 +8,11 @@ import HorizontalRule from 'components/ui/HorizontalRule';
 
 type KnapsackResultsType = {
   propostaId: number;
+};
+
+type SortableType = {
+  key: string;
+  resultados: number;
 };
 
 async function getVotes(propostaId: number) {
@@ -43,6 +49,7 @@ function getFormattedValue(value: number) {
 export default function KnapsackResults(props: KnapsackResultsType) {
   const [subpropostas, setSubpropostas] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [totalAcumulado, setTotalAcumulado] = useState<number>(0);
 
   useEffect(() => {
     getVotes(props.propostaId)
@@ -65,41 +72,30 @@ export default function KnapsackResults(props: KnapsackResultsType) {
             }
           }
 
-          let sortable: any[] = [];
+          let sortable: SortableType[] = [];
           for (const key in resultados) {
-            sortable.push([key, resultados[key]]);
+            sortable.push({key: key, resultados: resultados[key]});
           }
-          sortable.sort((a: any[], b: any[]) => {
-            return a[1] - b[1];
+          sortable.sort((a: SortableType, b: SortableType) => {
+            return a.resultados - b.resultados;
           });
           sortable.reverse();
           let acumulado = 0;
           let resultadoFinal: any[] = [];
           for (let i = 0; i < sortable.length; i++) {
-            if (valores[sortable[i][0]] + acumulado <= orcamento) {
-              acumulado += valores[sortable[i][0]];
-              resultadoFinal.push(
-                <View>
-                  <AppText style={styles.areaText}>{sortable[i][0]}</AppText>
-                  <AppText style={styles.valueText}>
-                    {sortable[i][1]} voto(s)
-                  </AppText>
-                </View>,
-              );
+            if (valores[sortable[i].key] + acumulado <= orcamento) {
+              acumulado += valores[sortable[i].key];
+              resultadoFinal.push({
+                key: sortable[i].key,
+                resultados: sortable[i].resultados,
+              });
             } else {
               break;
             }
           }
-
-          resultadoFinal.push(<HorizontalRule />);
-
-          resultadoFinal.push(
-            <AppText style={styles.totalText}>
-              TOTAL: R$ {getFormattedValue(acumulado)}
-            </AppText>,
-          );
           setSubpropostas(resultadoFinal);
           setIsLoading(false);
+          setTotalAcumulado(acumulado);
         } else {
           Alert.alert('Erro', 'Não conseguimos resgatar os dados da votação.');
         }
@@ -112,7 +108,19 @@ export default function KnapsackResults(props: KnapsackResultsType) {
   return (
     <View style={styles.container}>
       {isLoading && <AppText>Carregando...</AppText>}
-      {!isLoading && subpropostas}
+      {!isLoading &&
+        subpropostas.map(proposta => (
+          <View key={proposta.key}>
+            <AppText style={styles.areaText}>{proposta.key}</AppText>
+            <AppText style={styles.valueText}>
+              {proposta.resultados} voto(s)
+            </AppText>
+          </View>
+        ))}
+      <HorizontalRule />
+      <AppText style={styles.totalText}>
+        TOTAL: R$ {getFormattedValue(totalAcumulado)}
+      </AppText>
     </View>
   );
 }
