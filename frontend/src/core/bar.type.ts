@@ -1,6 +1,6 @@
 type BarType = {
   title: string;
-  value: number;
+  value: string | number;
   style: {};
 };
 

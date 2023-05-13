@@ -2,12 +2,7 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 
 import AppText from 'components/ui/AppText';
-
-type BarType = {
-  title: string;
-  value: number;
-  style?: {};
-};
+import BarType from 'src/core/bar.type';
 
 export default function ResultBar({title, value, style}: BarType) {
   return (

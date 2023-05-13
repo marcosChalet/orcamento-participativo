@@ -50,7 +50,7 @@ function loadBarData(
       let barWidth = {width: `${(100 * props.values[i]) / max}%`};
       results.push({
         title: props.areas[i].toUpperCase(),
-        value: +getFormattedValue(props.values[i]),
+        value: getFormattedValue(props.values[i]),
         style: barWidth,
       });
     }
