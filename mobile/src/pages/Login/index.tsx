@@ -213,7 +213,9 @@ const {styles} = StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
-    right: 8,
+    right: 0,
+    height: '100%',
+    paddingHorizontal: 12,
   },
   invalidInput: {
     color: '#c90007',
