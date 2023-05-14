@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 
 import {StyleSheet, View} from 'react-native';
@@ -36,9 +37,9 @@ async function getVotes(propostaId: number) {
 }
 
 export default function YesNoResults(props: YesNoResultsType) {
-  const [areas, setAreas] = useState<string[]>(['sim', 'não']);
   const [values, setValues] = useState<{[key: string]: number}>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const areas = ['sim', 'não'];
 
   useEffect(() => {
     setIsLoading(true);
