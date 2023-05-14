@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 
 import {useRoute} from '@react-navigation/native';
 
-import {Alert, ImageBackground, ScrollView, View} from 'react-native';
+import {ImageBackground, ScrollView, View} from 'react-native';
 import {StyleSheet} from 'react-native';
 import {NavigationProp} from '@react-navigation/native';
 import Markdown from '@ronradtke/react-native-markdown-display';
@@ -10,171 +10,24 @@ import Markdown from '@ronradtke/react-native-markdown-display';
 import AppText from 'components/ui/AppText';
 import Button from 'components/ui/Button';
 
-import strapi from '../../config/strapi';
 import UserContext from '../../context/GlobalContext';
 import NCutResults from '../../components/NCutResults';
 import YesNoResults from '../../components/YesNoResults';
 import KnapsackResults from '../../components/KnapsackResults';
 import HorizontalRule from 'components/ui/HorizontalRule';
+import useTipoProposta from '../../hooks/useTipoProposta';
 
 type PropostaType = {
   navigation: NavigationProp<any, any>;
 };
 
-async function checkNCUT(propostaId: number, userId: number) {
-  // checa se o usuário já votou nesta proposta
-  return strapi
-    .find('n-cuts', {
-      filters: {
-        usuario: {
-          id: {
-            $eq: userId,
-          },
-        },
-        proposta: {
-          id: {
-            $eq: propostaId,
-          },
-        },
-      },
-    })
-    .then((data: any) => {
-      return data.data;
-    })
-    .catch(error => {
-      console.log(error);
-    });
-}
-
-async function checkYesNo(propostaId: number, userId: number) {
-  return strapi
-    .find('yes-nos', {
-      filters: {
-        usuario: {
-          id: {
-            $eq: userId,
-          },
-        },
-        proposta: {
-          id: {
-            $eq: propostaId,
-          },
-        },
-      },
-    })
-    .then((data: any) => {
-      return data.data;
-    })
-    .catch(error => {
-      console.log(error);
-    });
-}
-
-async function checkKnapsack(propostaId: number, userId: number) {
-  return strapi
-    .find('knapsacks', {
-      filters: {
-        usuario: {
-          id: {
-            $eq: userId,
-          },
-        },
-        proposta: {
-          id: {
-            $eq: propostaId,
-          },
-        },
-      },
-    })
-    .then((data: any) => {
-      return data.data;
-    })
-    .catch(error => {
-      console.log(error);
-    });
-}
-
 export default function Proposta({navigation}: PropostaType) {
   const {userId} = useContext(UserContext);
-
+  const {onClick} = useTipoProposta();
   const route: any = useRoute();
 
   let id = route.params.id;
   let cost = route.params.cost;
-
-  function onClick() {
-    // verificar aqui o tipo e redirecionar para a página de votação correspondente
-    if (route.params.tipo === 'N-CUT') {
-      // navegar para a página de votação do N-CUT
-      checkNCUT(id, userId)
-        .then(data => {
-          if (data.length > 0) {
-            Alert.alert(
-              'Usuário já votou!',
-              'Você já votou nesta proposta. Cada usuário só tem direito a um voto!',
-            );
-          } else {
-            navigation.navigate('Votação N-CUT', {
-              id: id,
-            });
-          }
-        })
-        .catch(() => {
-          Alert.alert(
-            'Algum erro aconteceu!',
-            'Não conseguimos verificar se você já votou ou não nesta proposta. Por favor, tente novamente. Se o erro persistir, entre em contato com os responsáveis pelo app!',
-          );
-        });
-    } else if (route.params.tipo === 'Approval-1') {
-      // navegar para a página de votação do Approval-1
-      navigation.navigate('Votação Aprova-Um', {
-        id: id,
-      });
-    } else if (route.params.tipo === 'Knapsack') {
-      // navegar para a página de votação do Knapsack
-      checkKnapsack(id, userId)
-        .then(data => {
-          if (data.length > 0) {
-            Alert.alert(
-              'Usuário já votou!',
-              'Você já votou nesta proposta. Cada usuário só tem direito a um voto!',
-            );
-          } else {
-            navigation.navigate('Votação Mochileiro', {
-              id: id,
-              cost: cost,
-            });
-          }
-        })
-        .catch(() => {
-          Alert.alert(
-            'Algum erro aconteceu!',
-            'Não conseguimos verificar se você já votou ou não nesta proposta. Por favor, tente novamente. Se o erro persistir, entre em contato com os responsáveis pelo app!',
-          );
-        });
-    } else if (route.params.tipo === 'YES-NO') {
-      // navegar para a página de votação do YES-NO
-      checkYesNo(id, userId)
-        .then(data => {
-          if (data.length > 0) {
-            Alert.alert(
-              'Usuário já votou!',
-              'Você já votou nesta proposta. Cada usuário só tem direito a um voto!',
-            );
-          } else {
-            navigation.navigate('Votação Sim-Não', {
-              id: id,
-            });
-          }
-        })
-        .catch(() => {
-          Alert.alert(
-            'Algum erro aconteceu!',
-            'Não conseguimos verificar se você já votou ou não nesta proposta. Por favor, tente novamente. Se o erro persistir, entre em contato com os responsáveis pelo app!',
-          );
-        });
-    }
-  }
 
   return (
     <ScrollView style={styles.scrollView}>
@@ -198,7 +51,9 @@ export default function Proposta({navigation}: PropostaType) {
 
         <Markdown style={style}>{route.params.texto}</Markdown>
 
-        <Button style={styles.buttonStyle} clickFn={onClick}>
+        <Button
+          style={styles.buttonStyle}
+          clickFn={() => onClick(id, userId, cost, route, navigation)}>
           <AppText style={styles.buttonText}>Votar</AppText>
         </Button>
       </View>

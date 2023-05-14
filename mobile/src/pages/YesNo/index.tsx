@@ -1,12 +1,12 @@
 import React, {useContext, useState} from 'react';
-import {Alert, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import SwitchWithIcons from 'react-native-switch-with-icons';
 import {NavigationProp, useRoute} from '@react-navigation/native';
 
 import AppText from 'components/ui/AppText';
 import Button from 'components/ui/Button';
-import strapi from '../../config/strapi';
 import UserContext from '../../context/GlobalContext';
+import useYesNo from '../../hooks/useYesNo';
 
 function yesStyle(value: boolean) {
   if (value) {
@@ -36,25 +36,6 @@ function noStyle(value: boolean) {
   }
 }
 
-async function submitVote(userId: number, proposta: number, voto: string) {
-  return strapi
-    .create('yes-nos', {
-      proposta: {
-        connect: [proposta],
-      },
-      usuario: {
-        connect: [userId],
-      },
-      voto: voto,
-    })
-    .then((data: any) => {
-      return data.data;
-    })
-    .catch(error => {
-      console.log(error);
-    });
-}
-
 type YesNoType = {
   navigation: NavigationProp<any, any>;
 };
@@ -62,50 +43,9 @@ type YesNoType = {
 export default function YesNo({navigation}: YesNoType) {
   const [voto, setVoto] = useState<boolean>(true);
   const {userId} = useContext(UserContext);
-
+  const {onSubmit} = useYesNo();
   const route: any = useRoute();
-
   let id = parseInt(route.params.id, 10);
-
-  function onSubmit() {
-    let valorVoto = '';
-    if (voto) {
-      valorVoto = 'sim';
-    } else {
-      valorVoto = 'não';
-    }
-    Alert.alert('Confira a sua votação', `Voto: ${valorVoto}`, [
-      {text: 'Cancelar', style: 'cancel'},
-      {
-        text: 'Enviar voto',
-        onPress: () => {
-          submitVote(userId, id, valorVoto)
-            .then(data => {
-              if (data !== undefined) {
-                if (Object.keys(data).length > 0) {
-                  Alert.alert(
-                    'Seu voto foi registrado!',
-                    'Obrigado por participar desta votação.',
-                    [{text: 'OK', onPress: () => navigation.goBack()}],
-                  );
-                }
-              } else {
-                Alert.alert(
-                  'Algo deu errado!',
-                  'Infelizmente, não conseguimos registrar o seu voto no nosso banco de dados. Por favor, tente novamente! Se mesmo assim você não conseguir, entre em contato com os responsáveis pelo app.',
-                );
-              }
-            })
-            .catch(() => {
-              Alert.alert(
-                'Algo deu errado!',
-                'Infelizmente, não conseguimos registrar o seu voto no nosso banco de dados. Por favor, tente novamente! Se mesmo assim você não conseguir, entre em contato com os responsáveis pelo app.',
-              );
-            });
-        },
-      },
-    ]);
-  }
 
   return (
     <View style={styles.container}>
@@ -137,7 +77,9 @@ export default function YesNo({navigation}: YesNoType) {
         />
         <AppText style={yesStyle(voto)}>SIM</AppText>
       </View>
-      <Button style={styles.buttonStyle} clickFn={onSubmit}>
+      <Button
+        style={styles.buttonStyle}
+        clickFn={() => onSubmit(id, userId, voto, navigation)}>
         <AppText style={styles.buttonText}>Enviar Voto</AppText>
       </Button>
     </View>
