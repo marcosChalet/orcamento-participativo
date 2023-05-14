@@ -73,10 +73,10 @@ export default function NCut({navigation}: NCutType) {
 
         let size = Object.keys(areasAtt).length;
         for (const k in areasAtt) {
-          valoresIniciais[parseInt(k, 10)] = Math.floor(valor / size);
+          valoresIniciais[+k] = Math.floor(valor / size);
           areasStrings.push(areasAtt[k]);
           slidersLoad.push({
-            id: parseInt(k, 10),
+            id: +k,
             key: k,
             area: areasAtt[k],
             valorInicial: Math.floor(valor / size),

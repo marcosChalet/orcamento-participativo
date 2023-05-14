@@ -52,11 +52,11 @@ export default function NCutSlider(props: NCutSliderType) {
         <TextInput
           // eslint-disable-next-line @typescript-eslint/no-shadow
           onChangeText={value => {
-            if (!Number.isNaN(parseInt(value, 10))) {
-              setValue(parseInt(value, 10));
+            if (!Number.isNaN(+value)) {
+              setValue(+value);
               props.setValores(prevState => ({
                 ...prevState,
-                [props.id]: parseInt(value, 10),
+                [props.id]: +value,
               }));
             } else {
               setValue(0);

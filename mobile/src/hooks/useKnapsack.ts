@@ -244,7 +244,7 @@ export default function useKnapsack() {
       let votos: number[] = [];
       for (const key in selectedProjects) {
         if (selectedProjects[key]) {
-          votos.push(parseInt(key, 10));
+          votos.push(+key);
         }
       }
       Alert.alert('Enviar voto?', 'Você deseja enviar seus votos?', [

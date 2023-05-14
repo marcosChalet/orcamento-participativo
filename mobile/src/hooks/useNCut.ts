@@ -148,7 +148,7 @@ export default function useNCut() {
         let areasObject = data[0].attributes.proposta.data.attributes.areas;
 
         for (let key in areasObject) {
-          results[parseInt(key, 10)] = 0;
+          results[+key] = 0;
           areasNames.push(areasObject[key]);
         }
 
@@ -157,8 +157,7 @@ export default function useNCut() {
         for (let i = 0; i < numVotos; i++) {
           let voto = data[i].attributes.voto;
           for (let key in voto) {
-            results[parseInt(key, 10)] +=
-              parseFloat(voto[key]) / parseFloat(numVotos);
+            results[+key] += parseFloat(voto[key]) / parseFloat(numVotos);
           }
         }
 
