@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {
   ImageBackground,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   StyleSheet,
   View,
 } from 'react-native';
@@ -39,7 +39,7 @@ export default function Subproposta(props: SubpropostaInterface) {
   }
 
   return (
-    <TouchableOpacity>
+    <TouchableWithoutFeedback>
       <View style={styles.card}>
         <ImageBackground
           style={styles.imageContainer}
@@ -80,7 +80,7 @@ export default function Subproposta(props: SubpropostaInterface) {
           </Button>
         </View>
       </View>
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   );
 }
 
